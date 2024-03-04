@@ -7,9 +7,8 @@
  * 1. Decide whether to download HTML/Text file body or skip for PDF/etc.
  * 2. Skip data links.
  * 3. Only follow URLs for internal links (isInternal).
- * 4. Allow retries.
- * 5. Produce report.
- * 6. Add unit tests.
+ * 4. Add links that point to broken links in report.
+ * 5. Add unit tests.
  */
 
 use LinkChecker\Crawler;
