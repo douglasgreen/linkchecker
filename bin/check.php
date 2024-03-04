@@ -24,16 +24,16 @@ if (!file_exists($argv[1])) {
     die("File not found\n");
 }
 
-$config = parse_ini_file($argv[1], true);
+$config = parse_ini_file($argv[1]);
 
-$links = $config['links']['link'] ?? [];
+$links = $config['links'] ?? [];
 if (!$links) {
     die("No links to check\n");
 }
 
-$deleteParams = $config['delete_params']['param'] ?? [];
+$deleteParams = $config['delete_params'] ?? [];
 
-$skipDomains = $config['skip_domains']['domain'] ?? [];
+$skipDomains = $config['skip_domains'] ?? [];
 
 Url::setDomains($links);
 
