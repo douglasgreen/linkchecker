@@ -38,4 +38,14 @@ $skipDomains = $config['skip_domains'] ?? [];
 $crawler = new Crawler($links, $skipDomains, $deleteParams);
 
 $linksChecked = $crawler->crawl();
-var_dump($linksChecked);
+foreach ($linksChecked as $link) {
+    if ($link->httpCode < 200) {
+        echo "Bad domain: " . $link->effectiveUrl . "\n";
+    }
+    elseif ($link->httpCode >= 400 && $link->httpCode < 500) {
+        echo "Broken link: " . $link->effectiveUrl . "\n";
+    }
+    elseif ($link->httpCode > 500) {
+        echo "Site error: " . $link->effectiveUrl . "\n";
+    }
+}
