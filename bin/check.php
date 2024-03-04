@@ -9,6 +9,7 @@
  * 3. Only follow URLs for internal links (isInternal).
  * 4. Allow retries.
  * 5. Produce report.
+ * 6. Add unit tests.
  */
 
 use LinkChecker\Url;
