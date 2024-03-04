@@ -12,7 +12,7 @@
  * 6. Add unit tests.
  */
 
-use LinkChecker\Url;
+use LinkChecker\Crawler;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -35,13 +35,7 @@ $deleteParams = $config['delete_params'] ?? [];
 
 $skipDomains = $config['skip_domains'] ?? [];
 
-Url::setDomains($links);
+$crawler = new Crawler($links, $skipDomains, $deleteParams);
 
-Url::deleteParams($deleteParams);
-
-Url::skipDomains($skipDomains);
-
-foreach ($links as $link) {
-    $url = new Url($link);
-    var_dump($url);
-}
+$linksChecked = $crawler->crawl();
+var_dump($linksChecked);
