@@ -6,6 +6,7 @@ class Url
 {
     private static $deleteParams = [];
     private static $domains = [];
+    private static $skipDomains = [];
 
     private $isInternal;
     private $url;
@@ -24,6 +25,15 @@ class Url
         }
     }
 
+    // Set domains to skip.
+    public static function skipDomains(array $links): void
+    {
+        foreach ($links as $link) {
+            $domain = parse_url($link, PHP_URL_HOST);
+            self::$skipDomains[$domain] = true;
+        }
+    }
+
     public function __construct(string $url)
     {
         $this->url = $this->cleanUrl($url);
@@ -32,8 +42,15 @@ class Url
     }
 
     // Define the function to check the URL
+    // @todo Define return type.
     public function check()
     {
+        // Skip domains.
+        $domain = parse_url($this->url, PHP_URL_HOST);
+        if (isset(self::$skipDomains)) {
+            return null;
+        }
+
         // Initialize cURL session
         $ch = curl_init($this->url);
 

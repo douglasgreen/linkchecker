@@ -33,9 +33,13 @@ if (!$links) {
 
 $deleteParams = $config['delete_params']['param'] ?? [];
 
+$skipDomains = $config['skip_domains']['domain'] ?? [];
+
 Url::setDomains($links);
 
 Url::deleteParams($deleteParams);
+
+Url::skipDomains($skipDomains);
 
 foreach ($links as $link) {
     $url = new Url($link);
