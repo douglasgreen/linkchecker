@@ -1,0 +1,33 @@
+; Links to check, whose domains are considered internal and to be crawled.
+links[] = "https://www.example.com"
+links[] = "https://www.example.org"
+links[] = "https://www.example.net"
+
+; Parameters to delete from URLs before checking because they are not part of the page request.
+delete_params[] = "^(PHPSESSID|SID)"
+delete_params[] = "\butm_campaign\b"
+delete_params[] = "\butm_content\b"
+delete_params[] = "\butm_medium\b"
+delete_params[] = "\butm_source\b"
+delete_params[] = "\butm_term\b"
+delete_params[] = "\b_ics\b"
+delete_params[] = "\b_irclickid\b"
+
+; Domains of sites not to check.
+skip_domains[] = "https://facebook.com"
+skip_domains[] = "https://linkedin.com"
+skip_domains[] = "https://pinterest.com"
+skip_domains[] = "https://twitter.com"
+skip_domains[] = "https://www.facebook.com"
+skip_domains[] = "https://www.linkedin.com"
+skip_domains[] = "https://www.pinterest.com"
+skip_domains[] = "https://www.twitter.com"
+
+; Cache directory for HTML files.
+cache_dir = "var/cache"
+
+; Log file for program output.
+log_file = "var/log.csv"
+
+; Site map file.
+map_file = "var/sitemap.csv"
