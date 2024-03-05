@@ -16,16 +16,17 @@ class Link
     public $mimeType;
     public $redirectCount;
 
-    public function __construct(string $url, bool $isInternal)
+    private $logger;
+
+    public function __construct(Logger $logger, string $url, bool $isInternal)
     {
+        $this->logger = $logger;
         $this->url = $url;
         $this->isInternal = $isInternal;
     }
 
     public function check(): void
     {
-        echo "Checking $this->url - ";
-
         // Initialize a Curl session
         $ch = curl_init();
 
@@ -62,11 +63,12 @@ class Link
         $this->httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $this->redirectCount = curl_getinfo($ch, CURLINFO_REDIRECT_COUNT);
         $this->effectiveUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-        echo "$this->httpCode";
+        $logLine = "Checked $this->url - $this->httpCode";
         if ($this->redirectCount) {
-            echo " (" . $this->redirectCount . " -> " . $this->effectiveUrl . ")";
+            $logLine .= " (" . $this->redirectCount . " -> " . $this->effectiveUrl . ")";
         }
-        echo "\n";
+
+        $this->logger->writeLogLine($logLine);
     }
 
     /**
@@ -97,6 +99,11 @@ class Link
 
         // Close cURL session
         curl_close($ch);
+
+        $fileId = $this->logger->writeCacheFile($content);
+        if ($fileId) {
+            $this->logger->writeLogLine("Cached $fileId: $this->effectiveUrl");
+        }
 
         $dom = new DOMDocument();
         @$dom->loadHTML($content);

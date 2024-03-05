@@ -2,8 +2,12 @@
 
 namespace LinkChecker;
 
+use Exception;
+
 class Crawler
 {
+    private $logger;
+
     private $deleteParams = [];
     private $domains = [];
     private $skipDomains = [];
@@ -11,8 +15,10 @@ class Crawler
     private $urlsChecked = [];
     private $urlsToCheck = [];
 
-    public function __construct(array $urls, array $skipDomains, array $deleteParams)
+    public function __construct(Logger $logger, array $urls, array $skipDomains, array $deleteParams)
     {
+        $this->logger = $logger;
+
         $this->setDomains($urls);
         $this->skipDomains($skipDomains);
         $this->deleteParams = $deleteParams;
@@ -28,11 +34,11 @@ class Crawler
     public function crawl(): array
     {
         while ($this->urlsToCheck) {
-            echo count($this->urlsToCheck) . " URLs to check\n";
+            $this->logger->writeLogLine("URLs to check: " . count($this->urlsToCheck));
             $newUrls = [];
             shuffle($this->urlsToCheck);
             foreach ($this->urlsToCheck as $url) {
-                $link = new Link($url, $this->isInternal($url));
+                $link = new Link($logger, $url, $this->isInternal($url));
                 $link->check();
                 $this->urlsChecked[$url] = $link;
                 foreach ($link->getNewUrls() as $newUrl) {

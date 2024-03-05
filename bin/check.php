@@ -25,26 +25,49 @@ if (!file_exists($argv[1])) {
 
 $config = parse_ini_file($argv[1]);
 
+/**
+ * @var array Links to check, whose domains are considered internal and to be crawled.
+ */
 $links = $config['links'] ?? [];
 if (!$links) {
     die("No links to check\n");
 }
 
+/**
+ * @var array Parameters to delete from URLs before checking because they are not part of the page request.
+ */
 $deleteParams = $config['delete_params'] ?? [];
 
+/**
+ * @var Domains of sites not to check.
+ */
 $skipDomains = $config['skip_domains'] ?? [];
 
-$crawler = new Crawler($links, $skipDomains, $deleteParams);
+/**
+ * @var string Cache directory for HTML files.
+ */
+$cacheDir = $config['cache_dir'];
+
+/**
+ * @var string Log file for program output.
+ */
+$logFile = $config['log_file'];
+
+/**
+ * @var string Site map file.
+ */
+$mapFile = $config['map_file'];
+
+$crawler = new Crawler($links, $skipDomains, $deleteParams, $cacheDir, $logFile, $mapFile);
 
 $linksChecked = $crawler->crawl();
+
 foreach ($linksChecked as $link) {
     if ($link->httpCode < 200) {
         echo "Bad domain: " . $link->effectiveUrl . "\n";
-    }
-    elseif ($link->httpCode >= 400 && $link->httpCode < 500) {
+    } elseif ($link->httpCode >= 400 && $link->httpCode < 500) {
         echo "Broken link: " . $link->effectiveUrl . "\n";
-    }
-    elseif ($link->httpCode > 500) {
+    } elseif ($link->httpCode > 500) {
         echo "Site error: " . $link->effectiveUrl . "\n";
     }
 }
