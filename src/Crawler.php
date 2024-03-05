@@ -12,6 +12,9 @@ class Crawler
     private $domains = [];
     private $skipDomains = [];
 
+    /**
+     * @todo Implement checking for effective URLs and create site map.
+     */
     private $urlsChecked = [];
     private $urlsToCheck = [];
 
