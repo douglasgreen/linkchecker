@@ -17,8 +17,8 @@ class Logger
 
     public function __construct(string $cacheDir, string $logFile, string $mapFile)
     {
-        if (!file_exists($this->cacheDir) || !is_dir($this->cacheDir)) {
-            throw new Exception("Directory not found: $this->cacheDir");
+        if (!file_exists($cacheDir) || !is_dir($cacheDir)) {
+            throw new Exception("Directory not found: $cacheDir");
         }
 
         $this->cacheDir = realpath($cacheDir);
@@ -46,6 +46,8 @@ class Logger
         if ($file) {
             $this->cacheIndex++;
             $path = $this->cacheDir . '/file' . $this->cacheIndex . '.html';
+            file_put_contents($path, $file);
+
             return $this->cacheIndex;
         }
 

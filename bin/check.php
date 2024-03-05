@@ -12,6 +12,7 @@
  */
 
 use LinkChecker\Crawler;
+use LinkChecker\Logger;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -58,7 +59,9 @@ $logFile = $config['log_file'];
  */
 $mapFile = $config['map_file'];
 
-$crawler = new Crawler($links, $skipDomains, $deleteParams, $cacheDir, $logFile, $mapFile);
+$logger = new Logger($cacheDir, $logFile, $mapFile);
+
+$crawler = new Crawler($logger, $links, $skipDomains, $deleteParams);
 
 $linksChecked = $crawler->crawl();
 

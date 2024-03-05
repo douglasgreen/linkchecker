@@ -38,7 +38,7 @@ class Crawler
             $newUrls = [];
             shuffle($this->urlsToCheck);
             foreach ($this->urlsToCheck as $url) {
-                $link = new Link($logger, $url, $this->isInternal($url));
+                $link = new Link($this->logger, $url, $this->isInternal($url));
                 $link->check();
                 $this->urlsChecked[$url] = $link;
                 foreach ($link->getNewUrls() as $newUrl) {
