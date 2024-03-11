@@ -138,6 +138,11 @@ class Crawler
      */
     protected function cleanUrl(string $url, ?bool $includeQuery = true): string
     {
+        // Add missing scheme.
+        if (substr($url, 0, 2) == '//') {
+            $url = 'https:' . $url;
+        }
+
         // Parse the URL and extract its components
         $urlParts = parse_url($url);
 
