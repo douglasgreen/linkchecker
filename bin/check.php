@@ -2,13 +2,7 @@
 <?php
 
 /**
- * Check URLs.
- * To do:
- * 1. Decide whether to download HTML/Text file body or skip for PDF/etc.
- * 2. Skip data links.
- * 3. Only follow URLs for internal links (isInternal).
- * 4. Add links that point to broken links in report.
- * 5. Add unit tests.
+ * @file Check URLs.
  */
 
 use LinkChecker\Crawler;
