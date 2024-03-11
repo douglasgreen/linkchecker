@@ -98,13 +98,6 @@ class Crawler
     }
 
     /**
-     * Add URL to check.
-     */
-    protected function addUrlToCheck(string $url, string $base = null): void
-    {
-    }
-
-    /**
      * Clean URL by removing skip parameters and fragments.
      */
     protected function cleanUrl(string $url, ?bool $includeQuery = true): string
