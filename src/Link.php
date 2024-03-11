@@ -126,6 +126,7 @@ class Link
             return [];
         }
 
+        // @todo Figure out how to only log new effective URLs to cache.
         $fileId = $this->logger->writeCacheFile($content);
         if ($fileId) {
             $this->logger->writeLogLine("Cached $fileId: $this->effectiveUrl");
