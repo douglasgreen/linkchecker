@@ -10,12 +10,14 @@ class Logger
     private $cacheIndex = 0;
 
     private $logFile;
+    private $urlFile;
     private $mapFile;
 
     private $logHandle;
+    private $urlHandle;
     private $mapHandle;
 
-    public function __construct(string $cacheDir, string $logFile, string $mapFile)
+    public function __construct(string $cacheDir, string $logFile, string $urlFile, string $mapFile)
     {
         if (!file_exists($cacheDir) || !is_dir($cacheDir)) {
             throw new Exception("Directory not found: $cacheDir");
@@ -25,11 +27,17 @@ class Logger
         $this->clearCache();
 
         $this->logFile = $logFile;
+        $this->urlFile = $urlFile;
         $this->mapFile = $mapFile;
 
         $this->logHandle = fopen($this->logFile, 'w');
         if (!$this->logHandle) {
             throw new Exception("Unable to write to log file: $this->logFile");
+        }
+
+        $this->urlHandle = fopen($this->urlFile, 'w');
+        if (!$this->urlHandle) {
+            throw new Exception("Unable to write to URL file: $this->urlFile");
         }
 
         $this->mapHandle = fopen($this->mapFile, 'w');
@@ -62,6 +70,16 @@ class Logger
         $line = trim($line);
         if ($line) {
             fputs($this->logHandle, $line . "\n");
+        }
+    }
+
+    /**
+     * Write to URL file.
+     */
+    public function writeUrlRow(array $row): void
+    {
+        if ($row) {
+            fputcsv($this->urlHandle, $row);
         }
     }
 

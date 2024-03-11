@@ -55,11 +55,16 @@ $cacheDir = $config['cache_dir'];
 $logFile = $config['log_file'];
 
 /**
+ * @var string List of effective URLs and HTTP codes.
+ */
+$urlFile = $config['url_file'];
+
+/**
  * @var string Site map file.
  */
 $mapFile = $config['map_file'];
 
-$logger = new Logger($cacheDir, $logFile, $mapFile);
+$logger = new Logger($cacheDir, $logFile, $urlFile, $mapFile);
 
 $crawler = new Crawler($logger, $links, $skipDomains, $deleteParams);
 

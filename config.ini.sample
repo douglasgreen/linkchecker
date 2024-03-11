@@ -29,5 +29,8 @@ cache_dir = "var/cache"
 ; Log file for program output.
 log_file = "var/log.csv"
 
+; List of effective URLs and HTTP codes.
+url_file = "var/url.csv"
+
 ; Site map file.
 map_file = "var/sitemap.csv"
