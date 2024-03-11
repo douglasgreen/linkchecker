@@ -40,6 +40,15 @@ class Link
         curl_setopt($ch, CURLOPT_TIMEOUT, 15);
         curl_setopt($ch, CURLOPT_MAXREDIRS, self::MAX_REDIRS);
 
+        if ($this->isInternal) {
+            $domain = parse_url($this->url, PHP_URL_HOST);
+            $cookieJar = $this->logger->getCookieJar($domain);
+            curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieJar);
+            curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieJar);
+        }
+
+        // Store cookies
+
         // Execute the Curl session and capture the response headers
         $headers = curl_exec($ch);
 
@@ -99,6 +108,10 @@ class Link
 
         // Close cURL session
         curl_close($ch);
+
+        if (!$content) {
+            return [];
+        }
 
         $fileId = $this->logger->writeCacheFile($content);
         if ($fileId) {

@@ -47,6 +47,15 @@ class Logger
     }
 
     /**
+     * Get name of cookie jar file.
+     */
+    public function getCookieJar(string $domain): string
+    {
+        $cookieJar = $this->cacheDir . '/cookie_' . $domain . '.txt';
+        return $cookieJar;
+    }
+
+    /**
      * Save a cache file.
      */
     public function writeCacheFile(string $file): ?int
@@ -98,9 +107,19 @@ class Logger
      */
     protected function clearCache(): void
     {
+        // Clear files.
         $htmlFiles = glob($this->cacheDir . '/file*.html');
 
         foreach ($htmlFiles as $file) {
+            if (is_file($file)) {
+                unlink($file);
+            }
+        }
+
+        // Clear cookie jars.
+        $txtFiles = glob($this->cacheDir . '/cookie*.txt');
+
+        foreach ($txtFiles as $file) {
             if (is_file($file)) {
                 unlink($file);
             }

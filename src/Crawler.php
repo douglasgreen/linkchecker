@@ -13,8 +13,9 @@ class Crawler
     private $skipDomains = [];
 
     /**
-     * @todo Create site map.
+     * @var array <string, true> Site map hashes for unique record checking.
      */
+    private $siteMapHashes = [];
 
     /**
      * @var array<string, Link> URLs to check
@@ -95,8 +96,12 @@ class Crawler
                     }
 
                     // Write site map row.
-                    $mapRow = [$effectiveUrl, $newUrl];
-                    $this->logger->writeMapRow($mapRow);
+                    $hash = md5($effectiveUrl . '|' . $newUrl);
+                    if (!isset($this->siteMap[$hash])) {
+                        $mapRow = [$effectiveUrl, $newUrl];
+                        $this->logger->writeMapRow($mapRow);
+                        $this->siteMap[$hash] = true;
+                    }
 
                     // Skip URLs that have already been checked.
                     if (isset($this->urlsChecked[$newUrl]) || isset($this->effectiveUrlsChecked[$newUrl])) {
