@@ -9,7 +9,7 @@ class Crawler
     private $logger;
 
     private $deleteParams = [];
-    private $domains = [];
+    private $internalDomains = [];
     private $skipDomains = [];
 
     /**
@@ -45,25 +45,35 @@ class Crawler
     public function crawl(): array
     {
         while ($this->urlsToCheck) {
-            shuffle($this->urlsToCheck);
-            $this->logger->writeLogLine("URLs to check: " . count($this->urlsToCheck));
+            // Make a copy of the list of URLs to check and shuffle it.
+            $urlsToCheck = array_keys($this->urlsToCheck);
+            shuffle($urlsToCheck);
+
+            $this->logger->writeLogLine("URLs to check: " . count($urlsToCheck));
 
             /**
              * @var array<string, true> The batch of new URLs to copy to $this->urlsToCheck for checking.
              */
             $newUrls = [];
 
-            foreach ($this->urlsToCheck as $url) {
+            foreach ($urlsToCheck as $url) {
                 $link = new Link($this->logger, $url, $this->isInternal($url));
                 $link->check();
-                
-                // Mark cleaned effective URL checked.
+
+                // Clean effective URL.
                 $effectiveUrl = $this->cleanUrl($link->effectiveUrl);
                 if (!$effectiveUrl) {
                     continue;
                 }
+
+                // Skip URLs from domains that are invalid or blocked.
+                if (!$this->hasValidDomain($effectiveUrl)) {
+                    continue;
+                }
+
+                // Mark cleaned effective URL checked.
                 $this->urlsChecked[$effectiveUrl] = $link;
-                
+
                 // Write to URL file.
                 $urlRow = [$effectiveUrl, $link->httpCode];
                 $this->logger->writeUrlRow($urlRow);
@@ -79,9 +89,8 @@ class Crawler
                         continue;
                     }
 
-                    // Skip URLs from domains that are blocked.
-                    $domain = parse_url($newUrl, PHP_URL_HOST);
-                    if (isset($this->skipDomains[$domain])) {
+                    // Skip URLs from domains that are invalid or blocked.
+                    if (!$this->hasValidDomain($newUrl)) {
                         continue;
                     }
 
@@ -161,12 +170,33 @@ class Crawler
     }
 
     /**
+     * Check if a domain is valid and not blocked.
+     */
+    protected function hasValidDomain(string $url): bool
+    {
+        $domain = parse_url($url, PHP_URL_HOST);
+
+        // No domain.
+        if (!$domain) {
+            return false;
+        }
+
+        // Domain was marked to skip.
+        if (isset($this->skipDomains[$domain])) {
+            return false;
+        }
+
+        // Validate domain.
+        return filter_var($domain, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) !== false;
+    }
+
+    /**
      * Check if a URL is internal to domains being checked.
      */
     protected function isInternal(string $url): bool
     {
         $domain = parse_url($url, PHP_URL_HOST);
-        return isset($this->domains[$domain]);
+        return isset($this->internalDomains[$domain]);
     }
 
     /**
@@ -226,7 +256,7 @@ class Crawler
     {
         foreach ($urls as $url) {
             $domain = parse_url($url, PHP_URL_HOST);
-            $this->domains[$domain] = true;
+            $this->internalDomains[$domain] = true;
         }
     }
 
