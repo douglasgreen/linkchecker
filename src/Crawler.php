@@ -63,6 +63,10 @@ class Crawler
                     continue;
                 }
                 $this->urlsChecked[$effectiveUrl] = $link;
+                
+                // Write to URL file.
+                $urlRow = [$effectiveUrl, $link->httpCode];
+                $this->logger->writeUrlRow($urlRow);
 
                 foreach ($link->getNewUrls() as $newUrl) {
                     $newUrl = $this->cleanUrl($newUrl);
@@ -75,14 +79,18 @@ class Crawler
                         continue;
                     }
 
-                    // Skip URLs that have already been checked.
-                    if (isset($this->urlsChecked[$newUrl]) || isset($this->effectiveUrlsChecked[$newUrl])) {
-                        continue;
-                    }
-
                     // Skip URLs from domains that are blocked.
                     $domain = parse_url($newUrl, PHP_URL_HOST);
                     if (isset($this->skipDomains[$domain])) {
+                        continue;
+                    }
+
+                    // Write site map row.
+                    $mapRow = [$effectiveUrl, $newUrl];
+                    $this->logger->writeMapRow($mapRow);
+
+                    // Skip URLs that have already been checked.
+                    if (isset($this->urlsChecked[$newUrl]) || isset($this->effectiveUrlsChecked[$newUrl])) {
                         continue;
                     }
 
