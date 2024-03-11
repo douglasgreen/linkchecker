@@ -11,6 +11,7 @@ class Crawler
     private $deleteParams = [];
     private $internalDomains = [];
     private $skipDomains = [];
+    private $skipUrls = [];
 
     /**
      * @var array <string, true> Site map hashes for unique record checking.
@@ -27,11 +28,12 @@ class Crawler
      */
     private $urlsToCheck = [];
 
-    public function __construct(Logger $logger, array $urls, array $skipDomains, array $deleteParams)
+    public function __construct(Logger $logger, array $urls, array $skipDomains, array $skipUrls, array $deleteParams)
     {
         $this->logger = $logger;
         $this->setDomains($urls);
-        $this->skipDomains($skipDomains);
+        $this->setSkipDomains($skipDomains);
+        $this->setSkipUrls($skipUrls);
         $this->deleteParams = $deleteParams;
 
         foreach ($urls as $url) {
@@ -68,7 +70,7 @@ class Crawler
                 }
 
                 // Skip URLs from domains that are invalid or blocked.
-                if (!$this->hasValidDomain($effectiveUrl)) {
+                if (!$this->hasValidDomain($effectiveUrl) || $this->shouldSkip($effectiveUrl)) {
                     continue;
                 }
 
@@ -91,7 +93,7 @@ class Crawler
                     }
 
                     // Skip URLs from domains that are invalid or blocked.
-                    if (!$this->hasValidDomain($newUrl)) {
+                    if (!$this->hasValidDomain($newUrl) || $this->shouldSkip($effectiveUrl)) {
                         continue;
                     }
 
@@ -175,7 +177,7 @@ class Crawler
     }
 
     /**
-     * Check if a domain is valid and not blocked.
+     * Check if a domain is valid.
      */
     protected function hasValidDomain(string $url): bool
     {
@@ -268,11 +270,44 @@ class Crawler
     /**
      * Set domains to skip.
      */
-    protected function skipDomains(array $urls): void
+    protected function setSkipDomains(array $urls): void
     {
         foreach ($urls as $url) {
             $domain = parse_url($url, PHP_URL_HOST);
             $this->skipDomains[$domain] = true;
         }
+    }
+
+    /**
+     * Set URLs (host/path) to skip.
+     */
+    protected function setSkipUrls(array $urls): void
+    {
+        foreach ($urls as $url) {
+            $parts = parse_url($url);
+            $domain = $parts['host'];
+            $path = $parts['path'] ?? '/';
+            $this->skipUrls[$domain][$path] = true;
+        }
+    }
+
+    /**
+     * Should I skip this domain or domain/path?
+     */
+    protected function shouldSkip(string $url): bool
+    {
+        $parts = parse_url($url);
+        $domain = $parts['host'];
+        $path = $parts['path'] ?? '/';
+
+        if (isset($this->skipDomains[$domain])) {
+            return true;
+        }
+
+        if (isset($this->skipUrls[$domain][$path])) {
+            return true;
+        }
+
+        return false;
     }
 }

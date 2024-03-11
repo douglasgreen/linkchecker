@@ -45,6 +45,11 @@ $deleteParams = $config['delete_params'] ?? [];
 $skipDomains = $config['skip_domains'] ?? [];
 
 /**
+ * @var URLs (host/path) of sites not to check.
+ */
+$skipUrls = $config['skip_urls'] ?? [];
+
+/**
  * @var string Cache directory for HTML files.
  */
 $cacheDir = $config['cache_dir'];
@@ -66,7 +71,7 @@ $mapFile = $config['map_file'];
 
 $logger = new Logger($cacheDir, $logFile, $urlFile, $mapFile);
 
-$crawler = new Crawler($logger, $links, $skipDomains, $deleteParams);
+$crawler = new Crawler($logger, $links, $skipDomains, $skipUrls, $deleteParams);
 
 $linksChecked = $crawler->crawl();
 
