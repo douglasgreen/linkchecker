@@ -8,6 +8,19 @@ class Link
 {
     public const MAX_REDIRS = 10;
 
+    public const LINK_TAGS = [
+        ['a', 'href'],
+        ['audio', 'src'],
+        ['embed', 'src'],
+        ['iframe', 'src'],
+        ['img', 'src'],
+        ['link', 'href'],
+        ['object', 'data'],
+        ['script', 'src'],
+        ['source', 'src'],
+        ['video', 'src'],
+    ];
+
     public $url;
     public $isInternal;
 
@@ -118,15 +131,20 @@ class Link
             $this->logger->writeLogLine("Cached $fileId: $this->effectiveUrl");
         }
 
+
         $dom = new DOMDocument();
         @$dom->loadHTML($content);
-        $anchors = $dom->getElementsByTagName('a');
-        $newUrls = [];
 
-        foreach ($anchors as $anchor) {
-            $href = $anchor->getAttribute('href');
-            if ($href) {
-                $newUrls[] = $href;
+        $newUrls = [];
+        foreach (self::LINK_TAGS as $linkTag) {
+            list($tag, $attrib) = $linkTag;
+            $elements = $dom->getElementsByTagName($tag);
+
+            foreach ($elements as $element) {
+                $href = $element->getAttribute($attrib);
+                if ($href) {
+                    $newUrls[] = $href;
+                }
             }
         }
 
