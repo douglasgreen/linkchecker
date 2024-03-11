@@ -321,8 +321,12 @@ class Crawler
             return true;
         }
 
-        if (isset($this->skipUrls[$domain][$path])) {
-            return true;
+        if (isset($this->skipUrls[$domain])) {
+            foreach (array_keys($this->skipUrls[$domain]) as $skipPath) {
+                if (str_starts_with($path, $skipPath)) {
+                    return true;
+                }
+            }
         }
 
         return false;

@@ -23,8 +23,8 @@ skip_domains[] = "https://www.linkedin.com"
 skip_domains[] = "https://www.pinterest.com"
 skip_domains[] = "https://www.twitter.com"
 
-; Skip URLs of pages (host/path) not to check
-skip_urls[] = "https://www.example.com/store/additem.php"
+; Skip URLs of pages not to check when host matches and path starts with path
+skip_urls[] = "https://www.example.com/store/"
 
 ; Cache directory for HTML files.
 cache_dir = "var/cache"

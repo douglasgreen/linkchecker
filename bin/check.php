@@ -40,12 +40,12 @@ if (!$links) {
 $deleteParams = $config['delete_params'] ?? [];
 
 /**
- * @var Domains of sites not to check.
+ * @var array Domains of sites not to check.
  */
 $skipDomains = $config['skip_domains'] ?? [];
 
 /**
- * @var URLs (host/path) of sites not to check.
+ * @var array Skip URLs of pages not to check when host matches and path starts with path
  */
 $skipUrls = $config['skip_urls'] ?? [];
 
