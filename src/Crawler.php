@@ -13,21 +13,29 @@ class Crawler
     private $skipDomains = [];
 
     /**
-     * @todo Implement checking for effective URLs and create site map.
+     * @todo Create site map.
+     */
+
+    /**
+     * @var array<string, Link> URLs to check
      */
     private $urlsChecked = [];
+
+    /**
+     * @var array<string, true> URLs to check
+     */
     private $urlsToCheck = [];
 
     public function __construct(Logger $logger, array $urls, array $skipDomains, array $deleteParams)
     {
         $this->logger = $logger;
-
         $this->setDomains($urls);
         $this->skipDomains($skipDomains);
         $this->deleteParams = $deleteParams;
 
         foreach ($urls as $url) {
-            $this->addUrl($url);
+            $cleanUrl = $this->cleanUrl($url);
+            $this->urlsToCheck[$cleanUrl] = true;
         }
     }
 
@@ -37,41 +45,63 @@ class Crawler
     public function crawl(): array
     {
         while ($this->urlsToCheck) {
-            $this->logger->writeLogLine("URLs to check: " . count($this->urlsToCheck));
-            $newUrls = [];
             shuffle($this->urlsToCheck);
+            $this->logger->writeLogLine("URLs to check: " . count($this->urlsToCheck));
+
+            /**
+             * @var array<string, true> The batch of new URLs to copy to $this->urlsToCheck for checking.
+             */
+            $newUrls = [];
+
             foreach ($this->urlsToCheck as $url) {
                 $link = new Link($this->logger, $url, $this->isInternal($url));
                 $link->check();
-                $this->urlsChecked[$url] = $link;
+                
+                // Mark cleaned effective URL checked.
+                $effectiveUrl = $this->cleanUrl($link->effectiveUrl);
+                if (!$effectiveUrl) {
+                    continue;
+                }
+                $this->urlsChecked[$effectiveUrl] = $link;
+
                 foreach ($link->getNewUrls() as $newUrl) {
-                    $domain = parse_url($newUrl, PHP_URL_HOST);
-                    if (isset($this->skipDomains[$domain])) {
+                    $newUrl = $this->cleanUrl($newUrl);
+                    if ($newUrl) {
+                        $newUrl = $this->rel2abs($newUrl, $effectiveUrl);
+                    }
+
+                    // Skip empty URLs.
+                    if (!$newUrl) {
                         continue;
                     }
 
-                    $newUrl = $this->cleanUrl($newUrl);
-                    if ($newUrl) {
-                        $newUrl = $this->rel2abs($newUrl, $url);
+                    // Skip URLs that have already been checked.
+                    if (isset($this->urlsChecked[$newUrl]) || isset($this->effectiveUrlsChecked[$newUrl])) {
+                        continue;
                     }
-                    if (!$newUrl || isset($this->urlsChecked[$newUrl])) {
+
+                    // Skip URLs from domains that are blocked.
+                    $domain = parse_url($newUrl, PHP_URL_HOST);
+                    if (isset($this->skipDomains[$domain])) {
                         continue;
                     }
 
                     $newUrls[$newUrl] = true;
                 }
             }
-            $this->urlsToCheck = array_keys($newUrls);
+
+            // Copy a batch of new URLs to check.
+            $this->urlsToCheck = $newUrls;
         }
+
         return $this->urlsChecked;
     }
 
     /**
-     * Add a url for checking.
+     * Add URL to check.
      */
-    protected function addUrl(string $url)
+    protected function addUrlToCheck(string $url, string $base = null): void
     {
-        $this->urlsToCheck[] = $this->cleanUrl($url);
     }
 
     /**
@@ -145,45 +175,46 @@ class Crawler
      */
     protected function rel2abs(string $rel, string $base): string
     {
-        /* return if already absolute URL */
+        // Return if already absolute URL.
         if (parse_url($rel, PHP_URL_SCHEME) != '') {
             return $rel;
         }
 
         $base = $this->cleanUrl($base, false);
 
-        /* Queries and anchors */
+        // Queries and anchors
         if ($rel[0] == '?') {
             return $base . $rel;
         } elseif ($rel[0] == '#') {
             return '';
         }
 
-        /* parse base URL and convert to local variables:
-           $scheme, $host, $path */
+        // Parse base URL and convert to local variables: $scheme, $host, $path
         $parts = parse_url($base);
 
         $scheme = $parts['scheme'] ?? '';
         $host = $parts['host'] ?? '';
         $path = $parts['path'] ?? '';
 
-        /* remove non-directory element from path */
+        // Remove non-directory element from path.
         $path = preg_replace('#/[^/]*$#', '', $path);
 
-        /* destroy path if relative url points to root */
+        // Destroy path if relative URL points to root.
         if ($rel[0] == '/') {
             $path = '';
         }
 
-        /* dirty absolute URL */
+        // Make the dirty absolute URL.
         $abs = "$host$path/$rel";
 
-        /* replace '//' or '/./' or '/foo/../' with '/' */
+        // Replace '//' or '/./' or '/foo/../' with '/'.
         $re = array('#(/\.?/)#', '#/(?!\.\.)[^/]+/\.\./#');
-        for ($n = 1; $n > 0; $abs = preg_replace($re, '/', $abs, -1, $n)) {
+        $n = 1;
+        while ($n > 0) {
+            $abs = preg_replace($re, '/', $abs, -1, $n);
         }
 
-        /* absolute URL is ready! */
+        // The absolute URL is ready.
         return $scheme . '://' . $abs;
     }
 

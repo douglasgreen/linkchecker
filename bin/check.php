@@ -65,12 +65,12 @@ $crawler = new Crawler($logger, $links, $skipDomains, $deleteParams);
 
 $linksChecked = $crawler->crawl();
 
-foreach ($linksChecked as $link) {
+foreach ($linksChecked as $effectiveUrl => $link) {
     if ($link->httpCode < 200) {
-        echo "Bad domain: " . $link->effectiveUrl . "\n";
+        echo "Bad domain: " . $effectiveUrl . "\n";
     } elseif ($link->httpCode >= 400 && $link->httpCode < 500) {
-        echo "Broken link: " . $link->effectiveUrl . "\n";
+        echo "Broken link: " . $effectiveUrl . "\n";
     } elseif ($link->httpCode > 500) {
-        echo "Site error: " . $link->effectiveUrl . "\n";
+        echo "Site error: " . $effectiveUrl . "\n";
     }
 }
