@@ -24,6 +24,11 @@ class Crawler
     private $urlsChecked = [];
 
     /**
+     * @var array<string, true> URLs that were requested
+     */
+    private $urlsRequested = [];
+
+    /**
      * @var array<string, true> URLs to check
      */
     private $urlsToCheck = [];
@@ -45,7 +50,7 @@ class Crawler
     /**
      * Crawl the URLs recursively and return the list of URLs checked.
      */
-    public function crawl(): array
+    public function crawl(): void
     {
         while ($this->urlsToCheck) {
             // Make a copy of the list of URLs to check and shuffle it.
@@ -64,6 +69,9 @@ class Crawler
                 if (!$this->hasValidDomain($url) || $this->shouldSkip($url)) {
                     continue;
                 }
+
+                // Mark cleaned URL as requested.
+                $this->urlsRequested[$url] = true;
 
                 // Check URL.
                 $link = new Link($this->logger, $url, $this->isInternal($url));
@@ -112,7 +120,7 @@ class Crawler
                     }
 
                     // Skip URLs that have already been checked.
-                    if (isset($this->urlsChecked[$newUrl]) || isset($this->effectiveUrlsChecked[$newUrl])) {
+                    if (isset($this->urlsChecked[$newUrl]) || isset($this->urlsRequested[$newUrl])) {
                         continue;
                     }
 
@@ -123,8 +131,6 @@ class Crawler
             // Copy a batch of new URLs to check.
             $this->urlsToCheck = $newUrls;
         }
-
-        return $this->urlsChecked;
     }
 
     /**
