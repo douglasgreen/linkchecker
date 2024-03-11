@@ -60,6 +60,12 @@ class Crawler
             $newUrls = [];
 
             foreach ($urlsToCheck as $url) {
+                // Skip URLs from domains that are invalid or blocked.
+                if (!$this->hasValidDomain($url) || $this->shouldSkip($url)) {
+                    continue;
+                }
+
+                // Check URL.
                 $link = new Link($this->logger, $url, $this->isInternal($url));
                 $link->check();
 
@@ -93,7 +99,7 @@ class Crawler
                     }
 
                     // Skip URLs from domains that are invalid or blocked.
-                    if (!$this->hasValidDomain($newUrl) || $this->shouldSkip($effectiveUrl)) {
+                    if (!$this->hasValidDomain($newUrl) || $this->shouldSkip($newUrl)) {
                         continue;
                     }
 
