@@ -1,5 +1,5 @@
 {
-    "name": "dsg/linkchecker",
+    "name": "douglasgreen/linkchecker",
     "description": "Link Checking Program",
     "license": "MIT",
     "autoload": {
