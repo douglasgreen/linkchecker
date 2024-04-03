@@ -142,7 +142,7 @@ class Link
             $elements = $dom->getElementsByTagName($tag);
 
             foreach ($elements as $element) {
-                $href = $element->getAttribute($attrib);
+                $href = trim($element->getAttribute($attrib));
                 if ($href) {
                     $newUrls[] = $href;
                 }
