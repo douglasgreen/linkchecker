@@ -1,8 +1,8 @@
 <?php
 
-namespace LinkChecker;
+declare(strict_types=1);
 
-use DOMDocument;
+namespace LinkChecker;
 
 class Link
 {
@@ -21,19 +21,29 @@ class Link
         ['video', 'src'],
     ];
 
+    /**
+     * @var string
+     */
     public $url;
+
+    /**
+     * @var bool
+     */
     public $isInternal;
 
     public $effectiveUrl;
+
     public $httpCode;
+
     public $mimeType;
+
     public $redirectCount;
 
-    private $logger;
-
-    public function __construct(Logger $logger, string $url, bool $isInternal)
-    {
-        $this->logger = $logger;
+    public function __construct(
+        private readonly Logger $logger,
+        string $url,
+        bool $isInternal
+    ) {
         $this->url = $url;
         $this->isInternal = $isInternal;
     }
@@ -41,53 +51,54 @@ class Link
     public function check(): void
     {
         // Initialize a Curl session
-        $ch = curl_init();
+        $curlHandle = curl_init();
 
         // Set Curl options
-        curl_setopt($ch, CURLOPT_URL, $this->url);
-        curl_setopt($ch, CURLOPT_NOBODY, true);
-        curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-        curl_setopt($ch, CURLOPT_MAXREDIRS, self::MAX_REDIRS);
+        curl_setopt($curlHandle, CURLOPT_URL, $this->url);
+        curl_setopt($curlHandle, CURLOPT_NOBODY, true);
+        curl_setopt($curlHandle, CURLOPT_HEADER, true);
+        curl_setopt($curlHandle, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($curlHandle, CURLOPT_TIMEOUT, 15);
+        curl_setopt($curlHandle, CURLOPT_MAXREDIRS, self::MAX_REDIRS);
 
         if ($this->isInternal) {
-            $domain = parse_url($this->url, PHP_URL_HOST);
+            $domain = parse_url((string) $this->url, PHP_URL_HOST);
             $cookieJar = $this->logger->getCookieJar($domain);
-            curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieJar);
-            curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieJar);
+            curl_setopt($curlHandle, CURLOPT_COOKIEFILE, $cookieJar);
+            curl_setopt($curlHandle, CURLOPT_COOKIEJAR, $cookieJar);
         }
 
         // Store cookies
 
         // Execute the Curl session and capture the response headers
-        $headers = curl_exec($ch);
+        $headers = curl_exec($curlHandle);
 
         // Close the Curl session
-        curl_close($ch);
+        curl_close($curlHandle);
 
         // Split headers into lines
         $headerLines = explode("\n", $headers);
-        foreach ($headerLines as $line) {
+        foreach ($headerLines as $headerLine) {
             // Look for the Content-Type header
-            if (stripos($line, 'Content-Type:') === 0) {
+            if (stripos($headerLine, 'Content-Type:') === 0) {
                 // Extract the MIME type
-                $parts = explode(":", $line);
+                $parts = explode(':', $headerLine);
                 if (count($parts) > 1) {
                     $this->mimeType = trim($parts[1]);
                 }
+
                 break;
             }
         }
 
-        $this->httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $this->redirectCount = curl_getinfo($ch, CURLINFO_REDIRECT_COUNT);
-        $this->effectiveUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-        $logLine = "Checked $this->url - $this->httpCode";
+        $this->httpCode = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
+        $this->redirectCount = curl_getinfo($curlHandle, CURLINFO_REDIRECT_COUNT);
+        $this->effectiveUrl = curl_getinfo($curlHandle, CURLINFO_EFFECTIVE_URL);
+        $logLine = sprintf('Checked %s - %d', $this->url, $this->httpCode);
         if ($this->redirectCount) {
-            $logLine .= " (" . $this->redirectCount . " -> " . $this->effectiveUrl . ")";
+            $logLine .= ' (' . $this->redirectCount . ' -> ' . $this->effectiveUrl . ')';
         }
 
         $this->logger->writeLogLine($logLine);
@@ -100,52 +111,53 @@ class Link
     {
         // Only get new URLs from internal HTML pages that aren't redirect loops
         if (
-            !$this->isInternal ||
-            $this->redirectCount == self::MAX_REDIRS ||
-            !preg_match('~text/html~', $this->mimeType)
+            ! $this->isInternal ||
+            $this->redirectCount === self::MAX_REDIRS ||
+            (preg_match('~text/html~', (string) $this->mimeType) === 0)
         ) {
             return [];
         }
 
         // Initialize cURL session
-        $ch = curl_init($this->effectiveUrl);
+        $curlHandle = curl_init($this->effectiveUrl);
 
         // Set cURL options
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Follow redirects
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return output as a string from curl_exec()
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);   // Timeout after 10 seconds
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15);          // Maximum execution time
+        curl_setopt($curlHandle, CURLOPT_FOLLOWLOCATION, true); // Follow redirects
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true); // Return output as a string from curl_exec()
+        curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, 10);   // Timeout after 10 seconds
+        curl_setopt($curlHandle, CURLOPT_TIMEOUT, 15);          // Maximum execution time
 
         // Execute cURL session and get the content
-        $content = curl_exec($ch);
+        $content = curl_exec($curlHandle);
 
         // Close cURL session
-        curl_close($ch);
+        curl_close($curlHandle);
 
-        if (!$content) {
+        if ($content === false || ($content === '')) {
             return [];
         }
 
         // @todo Figure out how to only log new effective URLs to cache.
         $fileId = $this->logger->writeCacheFile($content);
-        if ($fileId) {
-            $this->logger->writeLogLine("Cached $fileId: $this->effectiveUrl");
+        if ($fileId !== null) {
+            $this->logger->writeLogLine(sprintf('Cached %s: %s', $fileId, $this->effectiveUrl));
         }
 
-
-        $dom = new DOMDocument();
-        @$dom->loadHTML($content);
+        $domDocument = new \DOMDocument();
+        $domDocument->loadHTML($content);
 
         $newUrls = [];
         foreach (self::LINK_TAGS as $linkTag) {
-            list($tag, $attrib) = $linkTag;
-            $elements = $dom->getElementsByTagName($tag);
+            [$tag, $attrib] = $linkTag;
+            $elements = $domDocument->getElementsByTagName($tag);
 
             foreach ($elements as $element) {
                 $href = trim($element->getAttribute($attrib));
-                if ($href) {
-                    $newUrls[] = $href;
+                if ($href === '') {
+                    continue;
                 }
+
+                $newUrls[] = $href;
             }
         }
 
