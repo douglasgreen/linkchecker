@@ -1,0 +1,4 @@
+parameters:
+    # Don't use level 9 because PHP functions return mixed everywhere
+    level: 8
+    tmpDir: ./var/phpstan

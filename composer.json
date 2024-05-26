@@ -2,6 +2,7 @@
     "name": "douglasgreen/linkchecker",
     "description": "Link Checking Program",
     "license": "MIT",
+    "type": "project",
     "autoload": {
         "psr-4": {
             "LinkChecker\\": "src/"
@@ -11,13 +12,22 @@
         "php": ">=8.2.0"
     },
     "require-dev": {
+        "douglasgreen/optparser": "^0.6",
         "phpmd/phpmd": "^2.15",
-        "phpunit/phpunit": "^11.0",
-        "squizlabs/php_codesniffer": "^3.9"
+        "phpstan/phpstan": "^1.10",
+        "rector/rector": "^1.0",
+        "symplify/easy-coding-standard": "^12.2"
     },
     "scripts": {
-        "fix-php": "./vendor/bin/phpcbf",
-        "lint-php": "./vendor/bin/phpcs && ./vendor/bin/phpmd bin,src text phpmd.xml"
+        "lint": [
+            "ecs",
+            "rector --dry-run",
+            "./run_phpmd.sh",
+            "./run_phpstan.sh"
+        ],
+        "lint:fix": [
+            "ecs --fix",
+            "rector"
+        ]
     }
 }
-
