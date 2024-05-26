@@ -12,15 +12,14 @@ use LinkChecker\Logger;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-if ($argc !== 2) {
-    die('Usage: ' . basename($argv[0]) . " CONFIG_FILE\n");
-}
+$optParser = new OptParser('Link checker', 'Crawl website and check links');
 
-if (! file_exists($argv[1])) {
-    die("File not found\n");
-}
+$optParser->addTerm('config-file', 'INFILE', 'Configuration file in INI format')
+    ->addUsageAll();
 
-$config = parse_ini_file($argv[1]);
+$input = $optParser->parse();
+
+$config = parse_ini_file($input->get('config-file'));
 
 /** @var array Links to check, whose domains are considered internal and to be crawled. */
 $links = $config['links'] ?? [];
