@@ -2,47 +2,67 @@
 
 declare(strict_types=1);
 
-namespace LinkChecker;
+namespace DouglasGreen\LinkChecker;
 
 class Logger
 {
-    private $cacheDir;
+    protected string $cacheDir;
 
-    private int $cacheIndex = 0;
+    protected int $cacheIndex = 0;
 
-    private $logHandle;
+    /**
+     * @var resource
+     */
+    protected $logHandle;
 
-    private $urlHandle;
+    /**
+     * @var resource
+     */
+    protected $urlHandle;
 
-    private $mapHandle;
+    /**
+     * @var resource
+     */
+    protected $mapHandle;
 
     public function __construct(
         string $cacheDir,
-        private readonly string $logFile,
-        private readonly string $urlFile,
-        private readonly string $mapFile
+        protected readonly string $logFile,
+        protected readonly string $urlFile,
+        protected readonly string $mapFile
     ) {
         if (! file_exists($cacheDir) || ! is_dir($cacheDir)) {
             throw new \Exception('Directory not found: ' . $cacheDir);
         }
 
-        $this->cacheDir = realpath($cacheDir);
+        $cacheDir = realpath($cacheDir);
+        if ($cacheDir === false) {
+            throw new \Exception('Unable to locate cache dir: ' . $cacheDir);
+        }
+
+        $this->cacheDir = $cacheDir;
         $this->clearCache();
 
-        $this->logHandle = fopen($this->logFile, 'w');
-        if (! $this->logHandle) {
+        $logHandle = fopen($this->logFile, 'w');
+        if ($logHandle === false) {
             throw new \Exception('Unable to write to log file: ' . $this->logFile);
         }
 
-        $this->urlHandle = fopen($this->urlFile, 'w');
-        if (! $this->urlHandle) {
+        $this->logHandle = $logHandle;
+
+        $urlHandle = fopen($this->urlFile, 'w');
+        if ($urlHandle === false) {
             throw new \Exception('Unable to write to URL file: ' . $this->urlFile);
         }
 
-        $this->mapHandle = fopen($this->mapFile, 'w');
-        if (! $this->mapHandle) {
+        $this->urlHandle = $urlHandle;
+
+        $mapHandle = fopen($this->mapFile, 'w');
+        if ($mapHandle === false) {
             throw new \Exception('Unable to write to log file: ' . $this->mapFile);
         }
+
+        $this->mapHandle = $mapHandle;
     }
 
     /**
@@ -84,22 +104,22 @@ class Logger
 
     /**
      * Write to URL file.
+     *
+     * @param array{string, int} $row
      */
     public function writeUrlRow(array $row): void
     {
-        if ($row !== []) {
-            fputcsv($this->urlHandle, $row);
-        }
+        fputcsv($this->urlHandle, $row);
     }
 
     /**
      * Write to map file.
+     *
+     * @param array{string, string} $row
      */
     public function writeMapRow(array $row): void
     {
-        if ($row !== []) {
-            fputcsv($this->mapHandle, $row);
-        }
+        fputcsv($this->mapHandle, $row);
     }
 
     /**
@@ -110,18 +130,22 @@ class Logger
         // Clear files.
         $htmlFiles = glob($this->cacheDir . '/file*.html');
 
-        foreach ($htmlFiles as $htmlFile) {
-            if (is_file($htmlFile)) {
-                unlink($htmlFile);
+        if ($htmlFiles !== false) {
+            foreach ($htmlFiles as $htmlFile) {
+                if (is_file($htmlFile)) {
+                    unlink($htmlFile);
+                }
             }
         }
 
         // Clear cookie jars.
         $txtFiles = glob($this->cacheDir . '/cookie*.txt');
 
-        foreach ($txtFiles as $txtFile) {
-            if (is_file($txtFile)) {
-                unlink($txtFile);
+        if ($txtFiles !== false) {
+            foreach ($txtFiles as $txtFile) {
+                if (is_file($txtFile)) {
+                    unlink($txtFile);
+                }
             }
         }
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace LinkChecker;
+namespace DouglasGreen\LinkChecker;
 
 class Link
 {
@@ -21,32 +21,19 @@ class Link
         ['video', 'src'],
     ];
 
-    /**
-     * @var string
-     */
-    public $url;
+    public string $effectiveUrl;
 
-    /**
-     * @var bool
-     */
-    public $isInternal;
+    public int $httpCode;
 
-    public $effectiveUrl;
+    public string $mimeType;
 
-    public $httpCode;
-
-    public $mimeType;
-
-    public $redirectCount;
+    public int $redirectCount;
 
     public function __construct(
         private readonly Logger $logger,
-        string $url,
-        bool $isInternal
-    ) {
-        $this->url = $url;
-        $this->isInternal = $isInternal;
-    }
+        public string $url,
+        public bool $isInternal
+    ) {}
 
     public function check(): void
     {
@@ -64,10 +51,12 @@ class Link
         curl_setopt($curlHandle, CURLOPT_MAXREDIRS, self::MAX_REDIRS);
 
         if ($this->isInternal) {
-            $domain = parse_url((string) $this->url, PHP_URL_HOST);
-            $cookieJar = $this->logger->getCookieJar($domain);
-            curl_setopt($curlHandle, CURLOPT_COOKIEFILE, $cookieJar);
-            curl_setopt($curlHandle, CURLOPT_COOKIEJAR, $cookieJar);
+            $domain = parse_url($this->url, PHP_URL_HOST);
+            if ($domain !== false && $domain !== null) {
+                $cookieJar = $this->logger->getCookieJar($domain);
+                curl_setopt($curlHandle, CURLOPT_COOKIEFILE, $cookieJar);
+                curl_setopt($curlHandle, CURLOPT_COOKIEJAR, $cookieJar);
+            }
         }
 
         // Store cookies
@@ -79,17 +68,19 @@ class Link
         curl_close($curlHandle);
 
         // Split headers into lines
-        $headerLines = explode("\n", $headers);
-        foreach ($headerLines as $headerLine) {
-            // Look for the Content-Type header
-            if (stripos($headerLine, 'Content-Type:') === 0) {
-                // Extract the MIME type
-                $parts = explode(':', $headerLine);
-                if (count($parts) > 1) {
-                    $this->mimeType = trim($parts[1]);
-                }
+        if (is_string($headers)) {
+            $headerLines = explode("\n", $headers);
+            foreach ($headerLines as $headerLine) {
+                // Look for the Content-Type header
+                if (stripos($headerLine, 'Content-Type:') === 0) {
+                    // Extract the MIME type
+                    $parts = explode(':', $headerLine);
+                    if (count($parts) > 1) {
+                        $this->mimeType = trim($parts[1]);
+                    }
 
-                break;
+                    break;
+                }
             }
         }
 
@@ -106,6 +97,8 @@ class Link
 
     /**
      * Get the list of new links for HTML pages.
+     *
+     * @return list<string>
      */
     public function getNewUrls(): array
     {
@@ -113,13 +106,16 @@ class Link
         if (
             ! $this->isInternal ||
             $this->redirectCount === self::MAX_REDIRS ||
-            (preg_match('~text/html~', (string) $this->mimeType) === 0)
+            (preg_match('~text/html~', $this->mimeType) === 0)
         ) {
             return [];
         }
 
         // Initialize cURL session
         $curlHandle = curl_init($this->effectiveUrl);
+        if ($curlHandle === false) {
+            return [];
+        }
 
         // Set cURL options
         curl_setopt($curlHandle, CURLOPT_FOLLOWLOCATION, true); // Follow redirects
@@ -133,7 +129,7 @@ class Link
         // Close cURL session
         curl_close($curlHandle);
 
-        if ($content === false || ($content === '')) {
+        if (! is_string($content) || $content === '') {
             return [];
         }
 

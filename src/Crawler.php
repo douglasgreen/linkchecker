@@ -2,19 +2,31 @@
 
 declare(strict_types=1);
 
-namespace LinkChecker;
+namespace DouglasGreen\LinkChecker;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class Crawler
 {
-    public $siteMap;
+    /**
+     * @var array<string, true>
+     */
+    public array $siteMap;
 
+    /**
+     * @var array<string, true>
+     */
     private array $internalDomains = [];
 
+    /**
+     * @var array<string, true>
+     */
     private array $skipDomains = [];
 
+    /**
+     * @var array<string, array<string, true>>
+     */
     private array $skipUrls = [];
 
     /**
@@ -32,6 +44,12 @@ class Crawler
      */
     private array $urlsToCheck = [];
 
+    /**
+     * @param list<string> $urls
+     * @param list<string> $skipDomains
+     * @param list<string> $skipUrls
+     * @param list<string> $deleteParams
+     */
     public function __construct(
         private readonly Logger $logger,
         array $urls,
@@ -173,7 +191,7 @@ class Crawler
             // Iterate over the parameters to remove and unset them from the query array
             foreach ($this->deleteParams as $deleteParam) {
                 foreach (array_keys($queryParams) as $key) {
-                    if (preg_match('/' . $deleteParam . '/', $key)) {
+                    if (preg_match('/' . $deleteParam . '/', (string) $key)) {
                         unset($queryParams[$key]);
                     }
                 }
@@ -291,7 +309,7 @@ class Crawler
         // Replace '//' or '/./' or '/foo/../' with '/'.
         $regex = ['#(/\.?/)#', '#/(?!\.\.)[^/]+/\.\./#'];
         $count = 1;
-        while ($count > 0) {
+        while ($abs !== null && $count > 0) {
             $abs = preg_replace($regex, '/', $abs, -1, $count);
         }
 
@@ -301,34 +319,56 @@ class Crawler
 
     /**
      * Set domains that are being checked.
+     *
+     * @param list<string> $urls
      */
     protected function setDomains(array $urls): void
     {
         foreach ($urls as $url) {
             $domain = parse_url((string) $url, PHP_URL_HOST);
+            if ($domain === false || $domain === null) {
+                throw new \Exception('Domain not found');
+            }
+
             $this->internalDomains[$domain] = true;
         }
     }
 
     /**
      * Set domains to skip.
+     *
+     * @param list<string> $urls
      */
     protected function setSkipDomains(array $urls): void
     {
         foreach ($urls as $url) {
             $domain = parse_url((string) $url, PHP_URL_HOST);
+            if ($domain === false || $domain === null) {
+                throw new \Exception('Domain not found');
+            }
+
             $this->skipDomains[$domain] = true;
         }
     }
 
     /**
      * Set URLs (host/path) to skip.
+     *
+     * @param list<string> $urls
      */
     protected function setSkipUrls(array $urls): void
     {
         foreach ($urls as $url) {
             $parts = parse_url((string) $url);
-            $domain = $parts['host'];
+            if ($parts === false) {
+                throw new \Exception('Unable to parse URL');
+            }
+
+            $domain = $parts['host'] ?? null;
+            if ($domain === null) {
+                throw new \Exception('Domain not found');
+            }
+
             $path = $parts['path'] ?? '/';
             $this->skipUrls[$domain][$path] = true;
         }
@@ -340,7 +380,15 @@ class Crawler
     protected function shouldSkip(string $url): bool
     {
         $parts = parse_url($url);
-        $domain = $parts['host'];
+        if ($parts === false) {
+            throw new \Exception('Unable to parse URL');
+        }
+
+        $domain = $parts['host'] ?? null;
+        if ($domain === null) {
+            throw new \Exception('Domain not found');
+        }
+
         $path = $parts['path'] ?? '/';
 
         if (isset($this->skipDomains[$domain])) {

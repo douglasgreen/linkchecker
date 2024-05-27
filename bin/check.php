@@ -7,8 +7,9 @@
 
 declare(strict_types=1);
 
-use LinkChecker\Crawler;
-use LinkChecker\Logger;
+use DouglasGreen\LinkChecker\Crawler;
+use DouglasGreen\LinkChecker\Logger;
+use DouglasGreen\OptParser\OptParser;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -19,34 +20,34 @@ $optParser->addTerm('config-file', 'INFILE', 'Configuration file in INI format')
 
 $input = $optParser->parse();
 
-$config = parse_ini_file($input->get('config-file'));
+$config = parse_ini_file((string) $input->get('config-file'));
 
-/** @var array Links to check, whose domains are considered internal and to be crawled. */
+/** Links to check, whose domains are considered internal and to be crawled. */
 $links = $config['links'] ?? [];
 if (! $links) {
     die("No links to check\n");
 }
 
-/** @var array Parameters to delete from URLs before checking because they are not part of the page request. */
+/** Parameters to delete from URLs before checking because they are not part of the page request. */
 $deleteParams = $config['delete_params'] ?? [];
 
-/** @var array Domains of sites not to check. */
+/** Domains of sites not to check. */
 $skipDomains = $config['skip_domains'] ?? [];
 
-/** @var array Skip URLs of pages not to check when host matches and path starts with path */
+/** Skip URLs of pages not to check when host matches and path starts with path */
 $skipUrls = $config['skip_urls'] ?? [];
 
-/** @var string Cache directory for HTML files. */
-$cacheDir = $config['cache_dir'];
+/** Cache directory for HTML files. */
+$cacheDir = $config['cache_dir'] ?? '';
 
-/** @var string Log file for program output. */
-$logFile = $config['log_file'];
+/** Log file for program output. */
+$logFile = $config['log_file'] ?? '';
 
-/** @var string List of effective URLs and HTTP codes. */
-$urlFile = $config['url_file'];
+/** List of effective URLs and HTTP codes. */
+$urlFile = $config['url_file'] ?? '';
 
-/** @var string Site map file. */
-$mapFile = $config['map_file'];
+/** Site map file. */
+$mapFile = $config['map_file'] ?? '';
 
 $logger = new Logger($cacheDir, $logFile, $urlFile, $mapFile);
 
