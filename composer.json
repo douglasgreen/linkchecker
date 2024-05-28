@@ -12,7 +12,7 @@
         "php": ">=8.2.0"
     },
     "require-dev": {
-        "douglasgreen/optparser": "^0.6",
+        "douglasgreen/optparser": "^0.7",
         "phpmd/phpmd": "^2.15",
         "phpstan/phpstan": "^1.10",
         "rector/rector": "^1.0",
