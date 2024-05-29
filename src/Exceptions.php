@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace DouglasGreen\Exceptions;
 
+if (class_exists(\DouglasGreen\Exceptions\BaseException::class)) {
+    return;
+}
+
 /**
  * Base class for program exceptions
  * This serves as the parent class for all custom exceptions in the application.
