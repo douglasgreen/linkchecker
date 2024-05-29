@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2eab7e0467eb314a0ed54a74b227aa32",
+    "content-hash": "dd8494eef4e88f8d1f7c3ee8784f264b",
     "packages": [],
     "packages-dev": [
         {
@@ -146,16 +146,16 @@
         },
         {
             "name": "douglasgreen/optparser",
-            "version": "0.7.0",
+            "version": "0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/douglasgreen/optparser.git",
-                "reference": "65167d37673407827d549b009512691275419233"
+                "reference": "b20dd9650f7b0085e3db2783f4f2519fc061c190"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/douglasgreen/optparser/zipball/65167d37673407827d549b009512691275419233",
-                "reference": "65167d37673407827d549b009512691275419233",
+                "url": "https://api.github.com/repos/douglasgreen/optparser/zipball/b20dd9650f7b0085e3db2783f4f2519fc061c190",
+                "reference": "b20dd9650f7b0085e3db2783f4f2519fc061c190",
                 "shasum": ""
             },
             "require": {
@@ -170,6 +170,9 @@
             },
             "type": "library",
             "autoload": {
+                "files": [
+                    "src/Exceptions.php"
+                ],
                 "psr-4": {
                     "DouglasGreen\\OptParser\\": "src/",
                     "DouglasGreen\\OptParser\\Tests\\": "tests/"
@@ -210,9 +213,9 @@
             ],
             "support": {
                 "issues": "https://github.com/douglasgreen/optparser/issues",
-                "source": "https://github.com/douglasgreen/optparser/tree/0.7.0"
+                "source": "https://github.com/douglasgreen/optparser/tree/0.7.1"
             },
-            "time": "2024-05-28T21:17:06+00:00"
+            "time": "2024-05-28T23:00:18+00:00"
         },
         {
             "name": "pdepend/pdepend",
@@ -1313,7 +1316,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.2.0"
+        "php": ">=8.2"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

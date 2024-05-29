@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace DouglasGreen\LinkChecker;
 
+use DouglasGreen\Exceptions\DirectoryException;
+use DouglasGreen\Exceptions\FileException;
+
 class Logger
 {
     protected string $cacheDir;
@@ -25,6 +28,10 @@ class Logger
      */
     protected $mapHandle;
 
+    /**
+     * @throws DirectoryException
+     * @throws FileException
+     */
     public function __construct(
         string $cacheDir,
         protected readonly string $logFile,
@@ -32,12 +39,12 @@ class Logger
         protected readonly string $mapFile
     ) {
         if (! file_exists($cacheDir) || ! is_dir($cacheDir)) {
-            throw new \Exception('Directory not found: ' . $cacheDir);
+            throw new DirectoryException('Directory not found: ' . $cacheDir);
         }
 
         $cacheDir = realpath($cacheDir);
         if ($cacheDir === false) {
-            throw new \Exception('Unable to locate cache dir: ' . $cacheDir);
+            throw new DirectoryException('Unable to locate cache dir: ' . $cacheDir);
         }
 
         $this->cacheDir = $cacheDir;
@@ -45,21 +52,21 @@ class Logger
 
         $logHandle = fopen($this->logFile, 'w');
         if ($logHandle === false) {
-            throw new \Exception('Unable to write to log file: ' . $this->logFile);
+            throw new FileException('Unable to write to log file: ' . $this->logFile);
         }
 
         $this->logHandle = $logHandle;
 
         $urlHandle = fopen($this->urlFile, 'w');
         if ($urlHandle === false) {
-            throw new \Exception('Unable to write to URL file: ' . $this->urlFile);
+            throw new FileException('Unable to write to URL file: ' . $this->urlFile);
         }
 
         $this->urlHandle = $urlHandle;
 
         $mapHandle = fopen($this->mapFile, 'w');
         if ($mapHandle === false) {
-            throw new \Exception('Unable to write to log file: ' . $this->mapFile);
+            throw new FileException('Unable to write to log file: ' . $this->mapFile);
         }
 
         $this->mapHandle = $mapHandle;

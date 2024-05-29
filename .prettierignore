@@ -1,5 +1,5 @@
-# This .prettierignore file contains common files and directories to ignore
-# when formatting code with Prettier. It includes ignore rules for:
+# This file contains common files and directories to ignore when checking code
+# with CSS/JS linters. It includes ignore rules for:
 #  - Dependency directories for package managers like npm, Bower, and Composer
 #  - Build output directories for tools like next.js, nuxt.js, and parcel
 #  - Configuration and cache files for tools like eslint and PHP Code Sniffer

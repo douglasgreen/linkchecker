@@ -35,43 +35,41 @@ $phpVersion = null;
 if (file_exists('composer.json')) {
     $composerContent = file_get_contents('composer.json');
     if ($composerContent !== false) {
-        $composerData = json_decode($composerContent, true);
+        $composerData = json_decode($composerContent, true, 16, JSON_THROW_ON_ERROR);
 
-        if (json_last_error() === JSON_ERROR_NONE) {
-            // Check for PHPUnit, Symfony, and Doctrine
-            $requires = $composerData['require'] ?? [];
-            $requiresDev = $composerData['require-dev'] ?? [];
+        // Check for PHPUnit, Symfony, and Doctrine
+        $requires = $composerData['require'] ?? [];
+        $requiresDev = $composerData['require-dev'] ?? [];
 
-            $allDependencies = array_merge($requires, $requiresDev);
+        $allDependencies = array_merge($requires, $requiresDev);
 
-            $hasPhpUnit = isset($allDependencies['phpunit/phpunit']);
-            foreach ($allDependencies as $name => $value) {
-                if (preg_match('#^phpunit/#', $name) === 1) {
-                    $hasPhpUnit = true;
-                }
-
-                if (preg_match('#^symfony/#', $name) === 1) {
-                    $hasSymfony = true;
-                }
-
-                if (preg_match('#^doctrine/#', $name) === 1) {
-                    $hasDoctrine = true;
-                }
-
-                if ($name !== 'php') {
-                    continue;
-                }
-
-                if (! is_string($value)) {
-                    continue;
-                }
-
-                if (preg_match('/\d+\.\d+/', $value, $match) !== 1) {
-                    continue;
-                }
-
-                $phpVersion = $match[0];
+        $hasPhpUnit = isset($allDependencies['phpunit/phpunit']);
+        foreach ($allDependencies as $name => $value) {
+            if (preg_match('#^phpunit/#', $name) === 1) {
+                $hasPhpUnit = true;
             }
+
+            if (preg_match('#^symfony/#', $name) === 1) {
+                $hasSymfony = true;
+            }
+
+            if (preg_match('#^doctrine/#', $name) === 1) {
+                $hasDoctrine = true;
+            }
+
+            if ($name !== 'php') {
+                continue;
+            }
+
+            if (! is_string($value)) {
+                continue;
+            }
+
+            if (preg_match('/\d+\.\d+/', $value, $match) !== 1) {
+                continue;
+            }
+
+            $phpVersion = $match[0];
         }
     }
 }

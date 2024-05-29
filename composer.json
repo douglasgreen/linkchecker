@@ -4,12 +4,15 @@
     "license": "MIT",
     "type": "project",
     "autoload": {
+        "files": [
+            "src/Exceptions.php"
+        ],
         "psr-4": {
             "DouglasGreen\\LinkChecker\\": "src/"
         }
     },
     "require": {
-        "php": ">=8.2.0"
+        "php": ">=8.2"
     },
     "require-dev": {
         "douglasgreen/optparser": "^0.7",
