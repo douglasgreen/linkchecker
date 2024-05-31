@@ -122,7 +122,7 @@ if ($hasDoctrine) {
 
 $paths = file('php_paths');
 if ($paths === false) {
-    exit("PHP paths not found\n");
+    exit('PHP paths not found' . PHP_EOL);
 }
 
 $paths = array_map('trim', $paths);

@@ -9,10 +9,6 @@ use DouglasGreen\Exceptions\FileException;
 
 class Logger
 {
-    protected string $cacheDir;
-
-    protected int $cacheIndex = 0;
-
     /**
      * @var resource
      */
@@ -21,12 +17,16 @@ class Logger
     /**
      * @var resource
      */
-    protected $urlHandle;
+    protected $mapHandle;
 
     /**
      * @var resource
      */
-    protected $mapHandle;
+    protected $urlHandle;
+
+    protected string $cacheDir;
+
+    protected int $cacheIndex = 0;
 
     /**
      * @throws DirectoryException
@@ -106,17 +106,7 @@ class Logger
             return;
         }
 
-        fwrite($this->logHandle, $line . "\n");
-    }
-
-    /**
-     * Write to URL file.
-     *
-     * @param array{string, int} $row
-     */
-    public function writeUrlRow(array $row): void
-    {
-        fputcsv($this->urlHandle, $row);
+        fwrite($this->logHandle, $line . PHP_EOL);
     }
 
     /**
@@ -127,6 +117,16 @@ class Logger
     public function writeMapRow(array $row): void
     {
         fputcsv($this->mapHandle, $row);
+    }
+
+    /**
+     * Write to URL file.
+     *
+     * @param array{string, int} $row
+     */
+    public function writeUrlRow(array $row): void
+    {
+        fputcsv($this->urlHandle, $row);
     }
 
     /**

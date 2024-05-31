@@ -6,9 +6,7 @@ namespace DouglasGreen\LinkChecker;
 
 class Link
 {
-    public const MAX_REDIRS = 10;
-
-    public const LINK_TAGS = [
+    public const array LINK_TAGS = [
         ['a', 'href'],
         ['audio', 'src'],
         ['embed', 'src'],
@@ -21,16 +19,18 @@ class Link
         ['video', 'src'],
     ];
 
+    public const int MAX_REDIRS = 10;
+
     public string $effectiveUrl;
 
-    public int $httpCode;
-
     public string $mimeType;
+
+    public int $httpCode;
 
     public int $redirectCount;
 
     public function __construct(
-        private readonly Logger $logger,
+        protected readonly Logger $logger,
         public string $url,
         public bool $isInternal
     ) {}
@@ -69,7 +69,7 @@ class Link
 
         // Split headers into lines
         if (is_string($headers)) {
-            $headerLines = explode("\n", $headers);
+            $headerLines = explode(PHP_EOL, $headers);
             foreach ($headerLines as $headerLine) {
                 // Look for the Content-Type header
                 if (stripos($headerLine, 'Content-Type:') === 0) {

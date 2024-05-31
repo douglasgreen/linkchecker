@@ -25,7 +25,7 @@ $config = parse_ini_file((string) $input->get('config-file'));
 /** Links to check, whose domains are considered internal and to be crawled. */
 $links = $config['links'] ?? [];
 if (! $links) {
-    die("No links to check\n");
+    die('No links to check' . PHP_EOL);
 }
 
 /** Parameters to delete from URLs before checking because they are not part of the page request. */

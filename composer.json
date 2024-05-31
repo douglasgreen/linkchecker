@@ -3,6 +3,27 @@
     "description": "Link Checking Program",
     "license": "MIT",
     "type": "project",
+    "homepage": "https://github.com/douglasgreen/linkchecker",
+    "authors": [
+        {
+            "name": "Douglas Green",
+            "email": "douglas@nurd.site",
+            "homepage": "https://nurd.site/",
+            "role": "Developer"
+        }
+    ],
+    "keywords": [
+        "broken links",
+        "crawler",
+        "link",
+        "link checker",
+        "logging",
+        "php",
+        "site map",
+        "url checker",
+        "web scraping",
+        "website crawler"
+    ],
     "autoload": {
         "files": [
             "src/Exceptions.php"

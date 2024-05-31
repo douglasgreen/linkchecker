@@ -19,32 +19,32 @@ class Crawler
     /**
      * @var array<string, true>
      */
-    private array $internalDomains = [];
+    protected array $internalDomains = [];
 
     /**
      * @var array<string, true>
      */
-    private array $skipDomains = [];
+    protected array $skipDomains = [];
 
     /**
      * @var array<string, array<string, true>>
      */
-    private array $skipUrls = [];
+    protected array $skipUrls = [];
 
     /**
      * @var array<string, Link> URLs to check
      */
-    private array $urlsChecked = [];
+    protected array $urlsChecked = [];
 
     /**
      * @var array<string, true> URLs that were requested
      */
-    private array $urlsRequested = [];
+    protected array $urlsRequested = [];
 
     /**
      * @var array<string, true> URLs to check
      */
-    private array $urlsToCheck = [];
+    protected array $urlsToCheck = [];
 
     /**
      * @param list<string> $urls
@@ -53,11 +53,11 @@ class Crawler
      * @param list<string> $deleteParams
      */
     public function __construct(
-        private readonly Logger $logger,
+        protected readonly Logger $logger,
         array $urls,
         array $skipDomains,
         array $skipUrls,
-        private readonly array $deleteParams
+        protected readonly array $deleteParams
     ) {
         $this->setDomains($urls);
         $this->setSkipDomains($skipDomains);
