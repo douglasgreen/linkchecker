@@ -21,13 +21,13 @@ class Link
 
     public const int MAX_REDIRS = 10;
 
-    public string $effectiveUrl;
+    protected string $effectiveUrl;
 
-    public string $mimeType;
+    protected string $mimeType;
 
-    public int $httpCode;
+    protected int $httpCode;
 
-    public int $redirectCount;
+    protected int $redirectCount;
 
     public function __construct(
         protected readonly Logger $logger,
@@ -95,6 +95,21 @@ class Link
         $this->logger->writeLogLine($logLine);
     }
 
+    public function getEffectiveUrl(): string
+    {
+        return $this->effectiveUrl;
+    }
+
+    public function getHttpCode(): int
+    {
+        return $this->httpCode;
+    }
+
+    public function getMimeType(): string
+    {
+        return $this->mimeType;
+    }
+
     /**
      * Get the list of new links for HTML pages.
      *
@@ -158,5 +173,10 @@ class Link
         }
 
         return $newUrls;
+    }
+
+    public function getRedirectCount(): int
+    {
+        return $this->redirectCount;
     }
 }

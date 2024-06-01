@@ -14,12 +14,12 @@ class Crawler
     /**
      * @var array<string, true>
      */
-    public array $siteMap;
+    protected array $internalDomains = [];
 
     /**
      * @var array<string, true>
      */
-    protected array $internalDomains = [];
+    protected array $siteMap;
 
     /**
      * @var array<string, true>
@@ -104,7 +104,7 @@ class Crawler
                 $link->check();
 
                 // Clean effective URL.
-                $effectiveUrl = $this->cleanUrl($link->effectiveUrl);
+                $effectiveUrl = $this->cleanUrl($link->getEffectiveUrl());
                 if ($effectiveUrl === '') {
                     continue;
                 }
@@ -122,7 +122,7 @@ class Crawler
                 $this->urlsChecked[$effectiveUrl] = $link;
 
                 // Write to URL file.
-                $urlRow = [$effectiveUrl, $link->httpCode];
+                $urlRow = [$effectiveUrl, $link->getHttpCode()];
                 $this->logger->writeUrlRow($urlRow);
 
                 foreach ($link->getNewUrls() as $newUrl) {
