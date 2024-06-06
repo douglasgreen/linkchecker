@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace DouglasGreen\LinkChecker;
 
-use DouglasGreen\Exceptions\UrlException;
-
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
@@ -323,14 +321,17 @@ class Crawler
      * Set domains that are being checked.
      *
      * @param list<string> $urls
-     * @throws UrlException
      */
     protected function setDomains(array $urls): void
     {
         foreach ($urls as $url) {
             $domain = parse_url((string) $url, PHP_URL_HOST);
-            if ($domain === false || $domain === null) {
-                throw new UrlException('Domain not found');
+            if ($domain === false) {
+                continue;
+            }
+
+            if ($domain === null) {
+                continue;
             }
 
             $this->internalDomains[$domain] = true;
@@ -341,14 +342,17 @@ class Crawler
      * Set domains to skip.
      *
      * @param list<string> $urls
-     * @throws UrlException
      */
     protected function setSkipDomains(array $urls): void
     {
         foreach ($urls as $url) {
             $domain = parse_url((string) $url, PHP_URL_HOST);
-            if ($domain === false || $domain === null) {
-                throw new UrlException('Domain not found');
+            if ($domain === false) {
+                continue;
+            }
+
+            if ($domain === null) {
+                continue;
             }
 
             $this->skipDomains[$domain] = true;
@@ -359,19 +363,18 @@ class Crawler
      * Set URLs (host/path) to skip.
      *
      * @param list<string> $urls
-     * @throws UrlException
      */
     protected function setSkipUrls(array $urls): void
     {
         foreach ($urls as $url) {
             $parts = parse_url((string) $url);
             if ($parts === false) {
-                throw new UrlException('Unable to parse URL');
+                continue;
             }
 
             $domain = $parts['host'] ?? null;
             if ($domain === null) {
-                throw new UrlException('Domain not found');
+                continue;
             }
 
             $path = $parts['path'] ?? '/';
@@ -381,18 +384,17 @@ class Crawler
 
     /**
      * Should I skip this domain or domain/path?
-     * @throws UrlException
      */
     protected function shouldSkip(string $url): bool
     {
         $parts = parse_url($url);
         if ($parts === false) {
-            throw new UrlException('Unable to parse URL');
+            return false;
         }
 
         $domain = $parts['host'] ?? null;
         if ($domain === null) {
-            throw new UrlException('Domain not found');
+            return false;
         }
 
         $path = $parts['path'] ?? '/';
