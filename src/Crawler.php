@@ -79,7 +79,9 @@ class Crawler
             $urlsToCheck = array_keys($this->urlsToCheck);
             shuffle($urlsToCheck);
 
-            $this->logger->writeLogLine('URLs to check: ' . count($urlsToCheck));
+            $this->logger->writeLogLine(
+                'URLs to check: ' . count($urlsToCheck)
+            );
 
             /** @var array<string, true> The batch of new URLs to copy to $this->urlsToCheck for checking. */
             $newUrls = [];
@@ -98,7 +100,9 @@ class Crawler
                 $this->urlsRequested[$urlToCheck] = true;
 
                 // Check URL.
-                $link = new Link($this->logger, $urlToCheck, $this->isInternal($urlToCheck));
+                $link = new Link($this->logger, $urlToCheck, $this->isInternal(
+                    $urlToCheck
+                ));
                 $link->check();
 
                 // Clean effective URL.
@@ -207,7 +211,10 @@ class Crawler
         }
 
         // Reject non-HTTPS? URLs.
-        if (isset($urlParts['scheme']) && (preg_match('/^https?$/', $urlParts['scheme']) === 0)) {
+        if (isset($urlParts['scheme']) && (preg_match(
+            '/^https?$/',
+            $urlParts['scheme']
+        ) === 0)) {
             return '';
         }
 
@@ -254,7 +261,11 @@ class Crawler
         }
 
         // Validate domain.
-        return filter_var($domain, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) !== false;
+        return filter_var(
+            $domain,
+            FILTER_VALIDATE_DOMAIN,
+            FILTER_FLAG_HOSTNAME
+        ) !== false;
     }
 
     /**

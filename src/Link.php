@@ -85,7 +85,10 @@ class Link
         }
 
         $this->httpCode = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
-        $this->redirectCount = curl_getinfo($curlHandle, CURLINFO_REDIRECT_COUNT);
+        $this->redirectCount = curl_getinfo(
+            $curlHandle,
+            CURLINFO_REDIRECT_COUNT
+        );
         $this->effectiveUrl = curl_getinfo($curlHandle, CURLINFO_EFFECTIVE_URL);
         $logLine = sprintf('Checked %s - %d', $this->url, $this->httpCode);
         if ($this->redirectCount) {
@@ -133,10 +136,26 @@ class Link
         }
 
         // Set cURL options
-        curl_setopt($curlHandle, CURLOPT_FOLLOWLOCATION, true); // Follow redirects
-        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true); // Return output as a string from curl_exec()
-        curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, 10);   // Timeout after 10 seconds
-        curl_setopt($curlHandle, CURLOPT_TIMEOUT, 15);          // Maximum execution time
+        curl_setopt(
+            $curlHandle,
+            CURLOPT_FOLLOWLOCATION,
+            true
+        ); // Follow redirects
+        curl_setopt(
+            $curlHandle,
+            CURLOPT_RETURNTRANSFER,
+            true
+        ); // Return output as a string from curl_exec()
+        curl_setopt(
+            $curlHandle,
+            CURLOPT_CONNECTTIMEOUT,
+            10
+        );   // Timeout after 10 seconds
+        curl_setopt(
+            $curlHandle,
+            CURLOPT_TIMEOUT,
+            15
+        );          // Maximum execution time
 
         // Execute cURL session and get the content
         $content = curl_exec($curlHandle);
@@ -151,7 +170,9 @@ class Link
         // @todo Figure out how to only log new effective URLs to cache.
         $fileId = $this->logger->writeCacheFile($content);
         if ($fileId !== null) {
-            $this->logger->writeLogLine(sprintf('Cached %s: %s', $fileId, $this->effectiveUrl));
+            $this->logger->writeLogLine(
+                sprintf('Cached %s: %s', $fileId, $this->effectiveUrl)
+            );
         }
 
         $domDocument = new \DOMDocument();
