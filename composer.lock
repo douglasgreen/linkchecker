@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd8494eef4e88f8d1f7c3ee8784f264b",
+    "content-hash": "1edf2ee9177879aac36a83ab94ef9a63",
     "packages": [],
     "packages-dev": [
         {
@@ -145,20 +145,22 @@
             "time": "2024-05-06T16:37:16+00:00"
         },
         {
-            "name": "douglasgreen/optparser",
-            "version": "0.7.1",
+            "name": "douglasgreen/config-setup",
+            "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "https://github.com/douglasgreen/optparser.git",
-                "reference": "b20dd9650f7b0085e3db2783f4f2519fc061c190"
+                "url": "https://github.com/douglasgreen/config-setup.git",
+                "reference": "b99f3d21c0ded161c583cf97268d3ab325d31a9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/douglasgreen/optparser/zipball/b20dd9650f7b0085e3db2783f4f2519fc061c190",
-                "reference": "b20dd9650f7b0085e3db2783f4f2519fc061c190",
+                "url": "https://api.github.com/repos/douglasgreen/config-setup/zipball/b99f3d21c0ded161c583cf97268d3ab325d31a9f",
+                "reference": "b99f3d21c0ded161c583cf97268d3ab325d31a9f",
                 "shasum": ""
             },
             "require": {
+                "douglasgreen/optparser": "^0.8",
+                "douglasgreen/utility": "^0.3",
                 "php": ">=8.1"
             },
             "require-dev": {
@@ -166,13 +168,89 @@
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^10.5",
                 "rector/rector": "^1.0",
-                "symplify/easy-coding-standard": "^12.1"
+                "symplify/easy-coding-standard": "^12.2"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DouglasGreen\\ConfigSetup\\": "src/"
+                }
+            },
+            "scripts": {
+                "lint": [
+                    "ecs",
+                    "rector --dry-run",
+                    "./run_phpmd.sh",
+                    "./run_phpstan.sh"
+                ],
+                "lint:fix": [
+                    "ecs --fix",
+                    "rector"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Douglas Green",
+                    "email": "douglas@nurd.site",
+                    "homepage": "https://nurd.site/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Preconfigured setup files for linting, fixing, and testing PHP and JavaScript projects",
+            "homepage": "https://github.com/douglasgreen/config-setup",
+            "keywords": [
+                "automation",
+                "ci-cd",
+                "code-quality",
+                "coding-standards",
+                "composer",
+                "config",
+                "fixing",
+                "linting",
+                "php",
+                "php-cs-fixer",
+                "phpcs",
+                "phpunit",
+                "static-analysis",
+                "testing"
+            ],
+            "support": {
+                "source": "https://github.com/douglasgreen/config-setup/tree/main",
+                "issues": "https://github.com/douglasgreen/config-setup/issues"
+            },
+            "time": "2024-06-11T11:41:31+00:00"
+        },
+        {
+            "name": "douglasgreen/optparser",
+            "version": "0.8.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/douglasgreen/optparser.git",
+                "reference": "35378c5e0ead54dae7f4cd2093bb9ba9743e50ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/douglasgreen/optparser/zipball/35378c5e0ead54dae7f4cd2093bb9ba9743e50ec",
+                "reference": "35378c5e0ead54dae7f4cd2093bb9ba9743e50ec",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "douglasgreen/utility": "^0.3",
+                "phpmd/phpmd": "^2.15",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.5",
+                "rector/rector": "^1.0",
+                "symplify/easy-coding-standard": "^12.2"
             },
             "type": "library",
             "autoload": {
-                "files": [
-                    "src/Exceptions.php"
-                ],
                 "psr-4": {
                     "DouglasGreen\\OptParser\\": "src/",
                     "DouglasGreen\\OptParser\\Tests\\": "tests/"
@@ -199,7 +277,7 @@
                 "cli library",
                 "command",
                 "command line",
-                "command line interface",
+                "command-line interface",
                 "command-line utility",
                 "console",
                 "php",
@@ -213,9 +291,70 @@
             ],
             "support": {
                 "issues": "https://github.com/douglasgreen/optparser/issues",
-                "source": "https://github.com/douglasgreen/optparser/tree/0.7.1"
+                "source": "https://github.com/douglasgreen/optparser/tree/0.8.8"
             },
-            "time": "2024-05-28T23:00:18+00:00"
+            "time": "2024-06-10T10:03:10+00:00"
+        },
+        {
+            "name": "douglasgreen/utility",
+            "version": "0.3.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/douglasgreen/utility.git",
+                "reference": "b6bcd9ba503686a5428a7385425eb556c78b298a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/douglasgreen/utility/zipball/b6bcd9ba503686a5428a7385425eb556c78b298a",
+                "reference": "b6bcd9ba503686a5428a7385425eb556c78b298a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpmd/phpmd": "^2.15",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.5",
+                "phpunitgen/console": "^6.1",
+                "rector/rector": "^1.0",
+                "symplify/easy-coding-standard": "^12.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DouglasGreen\\Utility\\": "src/",
+                    "DouglasGreen\\Utility\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Douglas Green",
+                    "email": "douglas@nurd.site",
+                    "homepage": "https://nurd.site/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A PHP utility project for exception classes and wrapper functions",
+            "homepage": "https://github.com/douglasgreen/utility",
+            "keywords": [
+                "directory",
+                "exceptions",
+                "file",
+                "php",
+                "regex",
+                "utility",
+                "wrapper"
+            ],
+            "support": {
+                "issues": "https://github.com/douglasgreen/utility/issues",
+                "source": "https://github.com/douglasgreen/utility/tree/0.3.5"
+            },
+            "time": "2024-06-11T10:09:12+00:00"
         },
         {
             "name": "pdepend/pdepend",
@@ -365,16 +504,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.11.2",
+            "version": "1.11.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "0d5d4294a70deb7547db655c47685d680e39cfec"
+                "reference": "9100a76ce8015b9aa7125b9171ae3a76887b6c82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/0d5d4294a70deb7547db655c47685d680e39cfec",
-                "reference": "0d5d4294a70deb7547db655c47685d680e39cfec",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9100a76ce8015b9aa7125b9171ae3a76887b6c82",
+                "reference": "9100a76ce8015b9aa7125b9171ae3a76887b6c82",
                 "shasum": ""
             },
             "require": {
@@ -419,7 +558,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-24T13:23:04+00:00"
+            "time": "2024-06-06T12:19:22+00:00"
         },
         {
             "name": "psr/container",
@@ -585,22 +724,22 @@
         },
         {
             "name": "symfony/config",
-            "version": "v7.0.7",
+            "version": "v7.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "f66f908a975500aa4594258bf454dc66e3939eac"
+                "reference": "2210fc99fa42a259eb6c89d1f724ce0c4d62d5d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/f66f908a975500aa4594258bf454dc66e3939eac",
-                "reference": "f66f908a975500aa4594258bf454dc66e3939eac",
+                "url": "https://api.github.com/repos/symfony/config/zipball/2210fc99fa42a259eb6c89d1f724ce0c4d62d5d2",
+                "reference": "2210fc99fa42a259eb6c89d1f724ce0c4d62d5d2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/deprecation-contracts": "^2.5|^3",
-                "symfony/filesystem": "^6.4|^7.0",
+                "symfony/filesystem": "^7.1",
                 "symfony/polyfill-ctype": "~1.8"
             },
             "conflict": {
@@ -640,7 +779,7 @@
             "description": "Helps you find, load, combine, autofill and validate configuration values of any kind",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/config/tree/v7.0.7"
+                "source": "https://github.com/symfony/config/tree/v7.1.1"
             },
             "funding": [
                 {
@@ -656,27 +795,27 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:29:19+00:00"
+            "time": "2024-05-31T14:57:53+00:00"
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v7.0.7",
+            "version": "v7.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "4db1314337f4dd864113f88e08c9a7f98b1c1324"
+                "reference": "77c636dfd86c0b60c5d184b2fd2ddf8dd11c309c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/4db1314337f4dd864113f88e08c9a7f98b1c1324",
-                "reference": "4db1314337f4dd864113f88e08c9a7f98b1c1324",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/77c636dfd86c0b60c5d184b2fd2ddf8dd11c309c",
+                "reference": "77c636dfd86c0b60c5d184b2fd2ddf8dd11c309c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "psr/container": "^1.1|^2.0",
                 "symfony/deprecation-contracts": "^2.5|^3",
-                "symfony/service-contracts": "^3.3",
+                "symfony/service-contracts": "^3.5",
                 "symfony/var-exporter": "^6.4|^7.0"
             },
             "conflict": {
@@ -720,7 +859,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v7.0.7"
+                "source": "https://github.com/symfony/dependency-injection/tree/v7.1.1"
             },
             "funding": [
                 {
@@ -736,7 +875,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:29:19+00:00"
+            "time": "2024-05-31T14:57:53+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -807,22 +946,24 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v7.0.7",
+            "version": "v7.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "cc168be6fbdcdf3401f50ae863ee3818ed4338f5"
+                "reference": "802e87002f919296c9f606457d9fa327a0b3d6b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/cc168be6fbdcdf3401f50ae863ee3818ed4338f5",
-                "reference": "cc168be6fbdcdf3401f50ae863ee3818ed4338f5",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/802e87002f919296c9f606457d9fa327a0b3d6b2",
+                "reference": "802e87002f919296c9f606457d9fa327a0b3d6b2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/polyfill-ctype": "~1.8",
-                "symfony/polyfill-mbstring": "~1.8",
+                "symfony/polyfill-mbstring": "~1.8"
+            },
+            "require-dev": {
                 "symfony/process": "^6.4|^7.0"
             },
             "type": "library",
@@ -851,7 +992,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v7.0.7"
+                "source": "https://github.com/symfony/filesystem/tree/v7.1.1"
             },
             "funding": [
                 {
@@ -867,7 +1008,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:29:19+00:00"
+            "time": "2024-05-31T14:57:53+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -1029,67 +1170,6 @@
             "time": "2024-01-29T20:11:03+00:00"
         },
         {
-            "name": "symfony/process",
-            "version": "v7.0.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/process.git",
-                "reference": "3839e56b94dd1dbd13235d27504e66baf23faba0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/3839e56b94dd1dbd13235d27504e66baf23faba0",
-                "reference": "3839e56b94dd1dbd13235d27504e66baf23faba0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Process\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Executes commands in sub-processes",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/process/tree/v7.0.7"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2024-04-18T09:29:19+00:00"
-        },
-        {
             "name": "symfony/service-contracts",
             "version": "v3.5.0",
             "source": {
@@ -1174,16 +1254,16 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v7.0.7",
+            "version": "v7.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "cdecc0022e40e90340ba1a59a3d5ccf069777078"
+                "reference": "db82c2b73b88734557cfc30e3270d83fa651b712"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/cdecc0022e40e90340ba1a59a3d5ccf069777078",
-                "reference": "cdecc0022e40e90340ba1a59a3d5ccf069777078",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/db82c2b73b88734557cfc30e3270d83fa651b712",
+                "reference": "db82c2b73b88734557cfc30e3270d83fa651b712",
                 "shasum": ""
             },
             "require": {
@@ -1230,7 +1310,7 @@
                 "serialize"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-exporter/tree/v7.0.7"
+                "source": "https://github.com/symfony/var-exporter/tree/v7.1.1"
             },
             "funding": [
                 {
@@ -1246,20 +1326,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:29:19+00:00"
+            "time": "2024-05-31T14:57:53+00:00"
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "12.2.0",
+            "version": "12.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/easy-coding-standard/easy-coding-standard.git",
-                "reference": "0b97c8e744217a8549efab3f971a982cbe0c310d"
+                "reference": "095fe591b2e51fd84edd21b8c9be74402eadc50e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/0b97c8e744217a8549efab3f971a982cbe0c310d",
-                "reference": "0b97c8e744217a8549efab3f971a982cbe0c310d",
+                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/095fe591b2e51fd84edd21b8c9be74402eadc50e",
+                "reference": "095fe591b2e51fd84edd21b8c9be74402eadc50e",
                 "shasum": ""
             },
             "require": {
@@ -1295,7 +1375,7 @@
             ],
             "support": {
                 "issues": "https://github.com/easy-coding-standard/easy-coding-standard/issues",
-                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/12.2.0"
+                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/12.2.1"
             },
             "funding": [
                 {
@@ -1307,12 +1387,14 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-23T04:36:48+00:00"
+            "time": "2024-06-02T01:25:21+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "douglasgreen/config-setup": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
