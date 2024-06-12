@@ -25,19 +25,17 @@
         "website crawler"
     ],
     "autoload": {
-        "files": [
-            "src/Exceptions.php"
-        ],
         "psr-4": {
             "DouglasGreen\\LinkChecker\\": "src/"
         }
     },
     "require": {
-        "php": ">=8.2"
+        "php": ">=8.1",
+        "douglasgreen/optparser": "dev-main",
+        "douglasgreen/utility": "dev-main"
     },
     "require-dev": {
         "douglasgreen/config-setup": "dev-main",
-        "douglasgreen/optparser": "dev-main",
         "phpmd/phpmd": "^2.15",
         "phpstan/phpstan": "^1.10",
         "rector/rector": "^1.0",

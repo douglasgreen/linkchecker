@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DouglasGreen\LinkChecker;
 
-use DouglasGreen\Exceptions\DirectoryException;
-use DouglasGreen\Exceptions\FileException;
+use DouglasGreen\Utility\Exceptions\FileSystem\DirectoryException;
+use DouglasGreen\Utility\Exceptions\FileSystem\FileException;
 
 class Logger
 {
@@ -36,7 +36,7 @@ class Logger
         string $cacheDir,
         protected readonly string $logFile,
         protected readonly string $urlFile,
-        protected readonly string $mapFile
+        protected readonly string $mapFile,
     ) {
         if (! file_exists($cacheDir) || ! is_dir($cacheDir)) {
             throw new DirectoryException('Directory not found: ' . $cacheDir);

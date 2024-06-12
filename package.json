@@ -9,6 +9,7 @@
     "devDependencies": {
         "@commitlint/cli": "^19.3",
         "@commitlint/config-conventional": "^19.2",
+        "@prettier/plugin-php": "^0.22",
         "husky": "^9.0",
         "prettier": "^3.2"
     },

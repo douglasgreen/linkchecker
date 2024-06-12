@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace DouglasGreen\LinkChecker;
 
-/**
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- */
 class Crawler
 {
     /**
@@ -55,7 +52,7 @@ class Crawler
         array $urls,
         array $skipDomains,
         array $skipUrls,
-        protected readonly array $deleteParams
+        protected readonly array $deleteParams,
     ) {
         $this->setDomains($urls);
         $this->setSkipDomains($skipDomains);
@@ -69,8 +66,6 @@ class Crawler
 
     /**
      * Crawl the URLs recursively and return the list of URLs checked.
-     *
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function crawl(): void
     {
@@ -171,8 +166,6 @@ class Crawler
 
     /**
      * Clean URL by removing skip parameters and fragments.
-     *
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function cleanUrl(string $url): string
     {
@@ -207,10 +200,7 @@ class Crawler
         }
 
         // Reject non-HTTPS? URLs.
-        if (isset($urlParts['scheme']) && (preg_match(
-            '/^https?$/',
-            $urlParts['scheme']
-        ) === 0)) {
+        if (isset($urlParts['scheme']) && preg_match('/^https?$/', $urlParts['scheme']) === 0) {
             return '';
         }
 

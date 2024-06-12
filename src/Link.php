@@ -34,7 +34,7 @@ class Link
     public function __construct(
         protected readonly Logger $logger,
         public string $url,
-        public bool $isInternal
+        public bool $isInternal,
     ) {}
 
     public function check(): void
@@ -123,7 +123,7 @@ class Link
         if (
             ! $this->isInternal ||
             $this->redirectCount === self::MAX_REDIRS ||
-            (preg_match('~text/html~', $this->mimeType) === 0)
+            preg_match('~text/html~', $this->mimeType) === 0
         ) {
             return [];
         }
@@ -141,8 +141,8 @@ class Link
             CURLOPT_RETURNTRANSFER,
             true
         ); // Return output as a string from curl_exec()
-        curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, 10);   // Timeout after 10 seconds
-        curl_setopt($curlHandle, CURLOPT_TIMEOUT, 15);          // Maximum execution time
+        curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, 10); // Timeout after 10 seconds
+        curl_setopt($curlHandle, CURLOPT_TIMEOUT, 15); // Maximum execution time
 
         // Execute cURL session and get the content
         $content = curl_exec($curlHandle);
