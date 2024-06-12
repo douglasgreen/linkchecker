@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace DouglasGreen\LinkChecker;
 
+use DOMDocument;
+
 class Link
 {
-    public const array LINK_TAGS = [
+    public const LINK_TAGS = [
         ['a', 'href'],
         ['audio', 'src'],
         ['embed', 'src'],
@@ -19,7 +21,7 @@ class Link
         ['video', 'src'],
     ];
 
-    public const int MAX_REDIRS = 10;
+    public const MAX_REDIRS = 10;
 
     protected string $effectiveUrl;
 
@@ -158,7 +160,7 @@ class Link
             $this->logger->writeLogLine(sprintf('Cached %s: %s', $fileId, $this->effectiveUrl));
         }
 
-        $domDocument = new \DOMDocument();
+        $domDocument = new DOMDocument();
         $domDocument->loadHTML($content);
 
         $newUrls = [];
