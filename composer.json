@@ -37,7 +37,7 @@
     },
     "require-dev": {
         "douglasgreen/config-setup": "dev-main",
-        "douglasgreen/optparser": "^0.8",
+        "douglasgreen/optparser": "dev-main",
         "phpmd/phpmd": "^2.15",
         "phpstan/phpstan": "^1.10",
         "rector/rector": "^1.0",
@@ -55,10 +55,10 @@
             "rector"
         ],
         "post-install-cmd": [
-            "vendor/douglasgreen/config-setup/bin/copy_files.php"
+            "vendor/douglasgreen/config-setup/bin/copy_files.php --wrap 100"
         ],
         "post-update-cmd": [
-            "vendor/douglasgreen/config-setup/bin/copy_files.php"
+            "vendor/douglasgreen/config-setup/bin/copy_files.php --wrap 100"
         ]
     },
     "repositories": [

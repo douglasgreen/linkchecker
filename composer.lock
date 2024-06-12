@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1edf2ee9177879aac36a83ab94ef9a63",
+    "content-hash": "8d150aa1be8de3e110e8e67200b8aa80",
     "packages": [],
     "packages-dev": [
         {
@@ -150,17 +150,15 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/douglasgreen/config-setup.git",
-                "reference": "b99f3d21c0ded161c583cf97268d3ab325d31a9f"
+                "reference": "f1a53adf294b9213a7147687247d64323274c221"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/douglasgreen/config-setup/zipball/b99f3d21c0ded161c583cf97268d3ab325d31a9f",
-                "reference": "b99f3d21c0ded161c583cf97268d3ab325d31a9f",
+                "url": "https://api.github.com/repos/douglasgreen/config-setup/zipball/f1a53adf294b9213a7147687247d64323274c221",
+                "reference": "f1a53adf294b9213a7147687247d64323274c221",
                 "shasum": ""
             },
             "require": {
-                "douglasgreen/optparser": "^0.8",
-                "douglasgreen/utility": "^0.3",
                 "php": ">=8.1"
             },
             "require-dev": {
@@ -222,33 +220,35 @@
                 "source": "https://github.com/douglasgreen/config-setup/tree/main",
                 "issues": "https://github.com/douglasgreen/config-setup/issues"
             },
-            "time": "2024-06-11T11:41:31+00:00"
+            "time": "2024-06-12T13:22:49+00:00"
         },
         {
             "name": "douglasgreen/optparser",
-            "version": "0.8.8",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/douglasgreen/optparser.git",
-                "reference": "35378c5e0ead54dae7f4cd2093bb9ba9743e50ec"
+                "reference": "647f270a217b122363e4e7d262cd39e1d3e527d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/douglasgreen/optparser/zipball/35378c5e0ead54dae7f4cd2093bb9ba9743e50ec",
-                "reference": "35378c5e0ead54dae7f4cd2093bb9ba9743e50ec",
+                "url": "https://api.github.com/repos/douglasgreen/optparser/zipball/647f270a217b122363e4e7d262cd39e1d3e527d9",
+                "reference": "647f270a217b122363e4e7d262cd39e1d3e527d9",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.1"
             },
             "require-dev": {
-                "douglasgreen/utility": "^0.3",
+                "douglasgreen/config-setup": "dev-main",
+                "douglasgreen/utility": "dev-main",
                 "phpmd/phpmd": "^2.15",
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^10.5",
                 "rector/rector": "^1.0",
                 "symplify/easy-coding-standard": "^12.2"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -291,70 +291,9 @@
             ],
             "support": {
                 "issues": "https://github.com/douglasgreen/optparser/issues",
-                "source": "https://github.com/douglasgreen/optparser/tree/0.8.8"
+                "source": "https://github.com/douglasgreen/optparser/tree/main"
             },
-            "time": "2024-06-10T10:03:10+00:00"
-        },
-        {
-            "name": "douglasgreen/utility",
-            "version": "0.3.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/douglasgreen/utility.git",
-                "reference": "b6bcd9ba503686a5428a7385425eb556c78b298a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/douglasgreen/utility/zipball/b6bcd9ba503686a5428a7385425eb556c78b298a",
-                "reference": "b6bcd9ba503686a5428a7385425eb556c78b298a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1"
-            },
-            "require-dev": {
-                "phpmd/phpmd": "^2.15",
-                "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^10.5",
-                "phpunitgen/console": "^6.1",
-                "rector/rector": "^1.0",
-                "symplify/easy-coding-standard": "^12.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "DouglasGreen\\Utility\\": "src/",
-                    "DouglasGreen\\Utility\\Tests\\": "tests/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Douglas Green",
-                    "email": "douglas@nurd.site",
-                    "homepage": "https://nurd.site/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A PHP utility project for exception classes and wrapper functions",
-            "homepage": "https://github.com/douglasgreen/utility",
-            "keywords": [
-                "directory",
-                "exceptions",
-                "file",
-                "php",
-                "regex",
-                "utility",
-                "wrapper"
-            ],
-            "support": {
-                "issues": "https://github.com/douglasgreen/utility/issues",
-                "source": "https://github.com/douglasgreen/utility/tree/0.3.5"
-            },
-            "time": "2024-06-11T10:09:12+00:00"
+            "time": "2024-06-11T21:13:54+00:00"
         },
         {
             "name": "pdepend/pdepend",
@@ -1393,7 +1332,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "douglasgreen/config-setup": 20
+        "douglasgreen/config-setup": 20,
+        "douglasgreen/optparser": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

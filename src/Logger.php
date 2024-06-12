@@ -44,9 +44,7 @@ class Logger
 
         $cacheDir = realpath($cacheDir);
         if ($cacheDir === false) {
-            throw new DirectoryException(
-                'Unable to locate cache dir: ' . $cacheDir
-            );
+            throw new DirectoryException('Unable to locate cache dir: ' . $cacheDir);
         }
 
         $this->cacheDir = $cacheDir;
@@ -54,27 +52,21 @@ class Logger
 
         $logHandle = fopen($this->logFile, 'w');
         if ($logHandle === false) {
-            throw new FileException(
-                'Unable to write to log file: ' . $this->logFile
-            );
+            throw new FileException('Unable to write to log file: ' . $this->logFile);
         }
 
         $this->logHandle = $logHandle;
 
         $urlHandle = fopen($this->urlFile, 'w');
         if ($urlHandle === false) {
-            throw new FileException(
-                'Unable to write to URL file: ' . $this->urlFile
-            );
+            throw new FileException('Unable to write to URL file: ' . $this->urlFile);
         }
 
         $this->urlHandle = $urlHandle;
 
         $mapHandle = fopen($this->mapFile, 'w');
         if ($mapHandle === false) {
-            throw new FileException(
-                'Unable to write to log file: ' . $this->mapFile
-            );
+            throw new FileException('Unable to write to log file: ' . $this->mapFile);
         }
 
         $this->mapHandle = $mapHandle;
