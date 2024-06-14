@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DouglasGreen\LinkChecker;
 
-use DouglasGreen\Utility\Exceptions\FileSystem\DirectoryException;
-use DouglasGreen\Utility\Exceptions\FileSystem\FileException;
+use DouglasGreen\Utility\FileSystem\DirectoryException;
+use DouglasGreen\Utility\FileSystem\FileException;
 
 class Logger
 {

@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/douglasgreen/optparser.git",
-                "reference": "eb8e8577d7f749646f3dd44a0bc62fcb78f480a2"
+                "reference": "d1e4de48b5a4024bd081d4b60b783af11b4d3b1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/douglasgreen/optparser/zipball/eb8e8577d7f749646f3dd44a0bc62fcb78f480a2",
-                "reference": "eb8e8577d7f749646f3dd44a0bc62fcb78f480a2",
+                "url": "https://api.github.com/repos/douglasgreen/optparser/zipball/d1e4de48b5a4024bd081d4b60b783af11b4d3b1a",
+                "reference": "d1e4de48b5a4024bd081d4b60b783af11b4d3b1a",
                 "shasum": ""
             },
             "require": {
@@ -77,7 +77,7 @@
                 "issues": "https://github.com/douglasgreen/optparser/issues",
                 "source": "https://github.com/douglasgreen/optparser/tree/main"
             },
-            "time": "2024-06-12T23:23:08+00:00"
+            "time": "2024-06-14T09:13:35+00:00"
         },
         {
             "name": "douglasgreen/utility",
@@ -85,12 +85,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/douglasgreen/utility.git",
-                "reference": "4f7f03ae048bb0d979b67758edd2b83fb5066f91"
+                "reference": "db9dff4260973256e50f590a1fb73f81b427651b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/douglasgreen/utility/zipball/4f7f03ae048bb0d979b67758edd2b83fb5066f91",
-                "reference": "4f7f03ae048bb0d979b67758edd2b83fb5066f91",
+                "url": "https://api.github.com/repos/douglasgreen/utility/zipball/db9dff4260973256e50f590a1fb73f81b427651b",
+                "reference": "db9dff4260973256e50f590a1fb73f81b427651b",
                 "shasum": ""
             },
             "require": {
@@ -140,7 +140,7 @@
                 "issues": "https://github.com/douglasgreen/utility/issues",
                 "source": "https://github.com/douglasgreen/utility/tree/main"
             },
-            "time": "2024-06-12T22:55:59+00:00"
+            "time": "2024-06-14T08:49:23+00:00"
         }
     ],
     "packages-dev": [
@@ -287,12 +287,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/douglasgreen/config-setup.git",
-                "reference": "7d729b0dd224b1e8f7fe484fa5a3ba383be219ce"
+                "reference": "92ce6438e4b93e1a95d0c63f2de926bc6c5225b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/douglasgreen/config-setup/zipball/7d729b0dd224b1e8f7fe484fa5a3ba383be219ce",
-                "reference": "7d729b0dd224b1e8f7fe484fa5a3ba383be219ce",
+                "url": "https://api.github.com/repos/douglasgreen/config-setup/zipball/92ce6438e4b93e1a95d0c63f2de926bc6c5225b9",
+                "reference": "92ce6438e4b93e1a95d0c63f2de926bc6c5225b9",
                 "shasum": ""
             },
             "require": {
@@ -357,7 +357,7 @@
                 "source": "https://github.com/douglasgreen/config-setup/tree/main",
                 "issues": "https://github.com/douglasgreen/config-setup/issues"
             },
-            "time": "2024-06-12T22:16:44+00:00"
+            "time": "2024-06-13T19:22:14+00:00"
         },
         {
             "name": "pdepend/pdepend",
