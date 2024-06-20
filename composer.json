@@ -44,20 +44,16 @@
     "scripts": {
         "lint": [
             "ecs",
-            "rector --dry-run",
-            "./run_phpmd.sh",
-            "./run_phpstan.sh"
+            "phpstan analyse",
+            "phpmd --cache --cache-file var/cache/phpmd/cache.php . text phpmd.xml",
+            "rector --dry-run"
         ],
         "lint:fix": [
             "ecs --fix",
             "rector"
         ],
-        "post-install-cmd": [
-            "vendor/douglasgreen/config-setup/bin/copy_files.php"
-        ],
-        "post-update-cmd": [
-            "vendor/douglasgreen/config-setup/bin/copy_files.php"
-        ]
+        "post-install-cmd": "vendor/douglasgreen/config-setup/bin/copy_files.php",
+        "post-update-cmd": "vendor/douglasgreen/config-setup/bin/copy_files.php"
     },
     "repositories": [
         {
