@@ -47,7 +47,6 @@
     },
     "require-dev": {
         "douglasgreen/config-setup": "dev-main",
-        "phpmd/phpmd": "^2.15",
         "phpstan/phpstan": "^1.11",
         "rector/rector": "^1.1",
         "symplify/easy-coding-standard": "^12.3"
@@ -57,7 +56,6 @@
             "ecs",
             "php-linter",
             "phpstan analyse",
-            "phpmd --cache --cache-file var/cache/phpmd/cache.php . text phpmd.xml",
             "rector --dry-run"
         ],
         "lint:fix": [
