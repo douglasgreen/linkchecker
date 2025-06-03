@@ -39,10 +39,13 @@ class Link
 
     public function check(): void
     {
+        // Set Curl options
+        if (! $this->url) {
+            return;
+        }
+
         // Initialize a Curl session
         $curlHandle = curl_init();
-
-        // Set Curl options
         curl_setopt($curlHandle, CURLOPT_URL, $this->url);
         curl_setopt($curlHandle, CURLOPT_NOBODY, true);
         curl_setopt($curlHandle, CURLOPT_HEADER, true);
@@ -56,8 +59,10 @@ class Link
             $domain = parse_url($this->url, PHP_URL_HOST);
             if ($domain !== false && $domain !== null) {
                 $cookieJar = $this->logger->getCookieJar($domain);
-                curl_setopt($curlHandle, CURLOPT_COOKIEFILE, $cookieJar);
-                curl_setopt($curlHandle, CURLOPT_COOKIEJAR, $cookieJar);
+                if ($cookieJar) {
+                    curl_setopt($curlHandle, CURLOPT_COOKIEFILE, $cookieJar);
+                    curl_setopt($curlHandle, CURLOPT_COOKIEJAR, $cookieJar);
+                }
             }
         }
 
