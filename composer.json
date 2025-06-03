@@ -31,9 +31,9 @@
     },
     "require-dev": {
         "douglasgreen/config-setup": "dev-main",
-        "phpstan/phpstan": "^1.11.9",
-        "rector/rector": "^1.2.2",
-        "symplify/easy-coding-standard": "^12.3.4"
+        "phpstan/phpstan": "^2.1",
+        "rector/rector": "^2.0",
+        "symplify/easy-coding-standard": "^12.5"
     },
     "autoload": {
         "psr-4": {
